@@ -3,7 +3,7 @@ import Navbar from "./Shared/Navbar";
 import HeroSection from "./HeroSection";
 import CategoryCarousel from "./CategoryCarousel";
 import LatestJobs from "./LatestJobs";
-import Footer from "./Footer";
+import Footer from "./Shared/Footer";
 const Home = () => {
   return (
     // Apply the background to the main div

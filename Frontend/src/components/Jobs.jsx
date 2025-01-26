@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Shared/Navbar";
 import Filtercard from "./Filtercard";
-import Job from "./Job";
+import Job from "./JobCompo";
 
 const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12];
 
