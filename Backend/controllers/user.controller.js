@@ -63,7 +63,7 @@ export const login = async (req, res) => {
     //check role is correct or not
     if (role != user.role) {
       return res.status(400).json({
-        messagee: "Account doesn't exits with current role",
+        message: "Account doesn't exits with current role",
         success: false,
       });
     }
