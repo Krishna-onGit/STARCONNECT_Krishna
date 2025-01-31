@@ -5,7 +5,10 @@ module.exports = {
   theme: {
   	extend: {
 		backgroundImage: {
-			'main-bg': 'var(--main-bg)',
+			'main-bg': 'linear-gradient(to bottom left, #6b1f9c, #000, #6b1f9c)',//main bg
+		  },
+		  backgroundColor: {
+			'overlay-bg': 'rgba(54, 51, 51, 0.15)', // Add overlay bg color
 		  },
   		borderRadius: {
   			lg: 'var(--radius)',

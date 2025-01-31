@@ -1,8 +1,10 @@
 import React from 'react'
 import { Badge } from './ui/badge'
+import { useNavigate } from 'react-router-dom'
 
 
 const LatestJobsCards = () => {
+  const navigate = useNavigate();
   return (
     <div className='p-5 rounded-md  bg-white border shadow-white shadow-sm border-grey-500 cursor-pointer'>
         <div >

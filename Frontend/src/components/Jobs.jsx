@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Shared/Navbar";
 import Filtercard from "./Filtercard";
 import Job from "./JobCompo";
+import { useSelector } from "react-redux";
 
 const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12];
 
 const Jobs = () => {
+  const {allJobs, searchedQuery}= useSelector(store=>store.job);//to fetch jobs
+  const [filterJobs , setFilterJobs]= useState(allJobs);
+
+  useEffect(()=>{
+    if(searchedQuery){
+      const filteredJobs = allJobs.filter((job)=>{
+        return job.title.toLowercase().includes(searchedQuery.toLowercase()) ||
+        job.description.toLowercase().includes(searchedQuery.toLowercase()) ||
+        job.description.toLowercase().includes(searchedQuery.toLowercase())
+      })
+
+    }else{
+      setFilterJobs(allJobs)
+    }
+  },[allJobs , searchedQuery]);
   return (
     <div className="bg-main-bg  min-h-screen text-white">
       <Navbar />

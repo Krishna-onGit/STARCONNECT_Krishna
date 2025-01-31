@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 // import { setSearchedQuery } from '@/redux/jobSlice';
 import { useNavigate } from "react-router-dom";
+import { setSearchedQuery } from "@/Redux/JobSlice";
 
 // LOGIC YET TO BE ADDED
 const HeroSection = () => {
@@ -39,7 +40,7 @@ const HeroSection = () => {
   <p className="font-medium text-white mb-2">From auditions to breakthroughs, your journey starts here.Let your star shine bright in the entertainment universe!</p> */}
 
         {/* searchbar */}
-        <div className="flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
+        <div className="flex text-white w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
           <input
             type="text"
             placeholder="Find your DREAM Role"

@@ -50,75 +50,90 @@ const Login = () => {
   };
 
   return (
-    <div className="mt-20 ">
-      <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form
-          onSubmit={submitHandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
-        >
-          <h1 className="font-bold text-xl mb-5">Login</h1>
+    <div className="bg-main-bg min-h-screen flex flex-col ">
+      <div className="bg-overlay-bg  min-h-screen">
+        <div className="mt-10">
 
-          <div className="my-2">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              value={Input.fullemail}
-              name="email"
-              onChange={changeEventHandler}
-              placeholder=""
-            />
-          </div>
+        <Navbar />
+        <div className="flex items-center justify-center max-w-7xl mx-auto mt-20 text-white">
+          <form
+            onSubmit={submitHandler}
+            className="w-1/2 border border-gray-200 rounded-md p-4 "
+          >
+            <h1 className="font-bold text-xl mb-5 ">Login</h1>
 
-          <div className="my-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              value={Input.password}
-              name="password"
-              onChange={changeEventHandler}
-              placeholder=""
-            />
-          </div>
+            <div className="my-2 ">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={Input.fullemail}
+                name="email"
+                onChange={changeEventHandler}
+                placeholder=""
+              />
+            </div>
 
-          <div className="flex items-center justify-between">
-            <RadioGroup className="flex items-center gap-5 my-5">
-              <div className="flex items-center space-x-2 ">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="Actor"
-                  checked={input.role === "Actor"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer "
-                />
-                <Label htmlFor="r1">Actor</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="Director"
-                  checked={input.role === "Director"}
-                  onChange={changeEventHandler}
-                  className="cursor-pointer"
-                />
-                <Label htmlFor="r2">Director</Label>
-              </div>
-            </RadioGroup>
-          </div>
-          {
-            Loading.loading ? <Button className="w-full my-4"> <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</Button> : <Button type="submit" className="w-full my-4">Login</Button> 
-          }
-          <span className="text-sm">
-            Don't have account?{" "}
-            <Link to="/SignUp" className="text-blue-600">
-              SignUp
-            </Link>
-          </span>
-        </form>
+            <div className="my-2 ">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                value={Input.password}
+                name="password"
+                onChange={changeEventHandler}
+                placeholder=""
+              />
+            </div>
+
+            <div className="flex items-center justify-between ">
+              <RadioGroup className="flex items-center gap-5 my-5">
+                <div className="flex items-center space-x-2 ">
+                  <Input
+                    type="radio"
+                    name="role"
+                    value="Actor"
+                    checked={input.role === "Actor"}
+                    onChange={changeEventHandler}
+                    className="cursor-pointer "
+                  />
+                  <Label htmlFor="r1">Actor</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    type="radio"
+                    name="role"
+                    value="Director"
+                    checked={input.role === "Director"}
+                    onChange={changeEventHandler}
+                    className="cursor-pointer"
+                  />
+                  <Label htmlFor="r2">Director</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            <div className="flex justify-center">
+
+            {Loading.loading ? (
+              <Button className="w-full my-4 ">
+                {" "}
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full my-4 bg-transparent transition duration-300 ease-in-out transform hover:bg-white hover:scale-105 hover:shadow-lg hover:text-black">
+                Login
+              </Button>
+            )}
+            </div>
+            <span className="text-sm flex">
+              Don't have account?{" "}
+              <Link to="/SignUp" className="text-blue-600">
+                SignUp
+              </Link>
+            </span>
+          </form>
+        </div>
       </div>
     </div>
+        </div>
   );
 };
 

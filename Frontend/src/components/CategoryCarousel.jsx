@@ -1,6 +1,9 @@
 import React from 'react'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel'
 import { Button } from './ui/button'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { setSearchedQuery } from '@/Redux/JobSlice'
 
 const Category =[
     "Television Casting",
@@ -13,6 +16,13 @@ const Category =[
 ]
 // LOGIC YET TO ADDED what will happen onClicking these Category
 const CategoryCarousel = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+  
+     const searchJobHandler = (query) => {
+        dispatch(setSearchedQuery(query));
+        navigate("/browse");
+      };
   return (
     <div>
         <Carousel className="w-full max-w-xl mx-auto y-20">
@@ -20,7 +30,7 @@ const CategoryCarousel = () => {
                 {
                     Category.map((cat,index)=>(
                         <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                            <Button className="rounded-full" variant="outline">{cat}</Button>
+                            <Button onClick={()=>searchJobHandler(cat)} className="rounded-full" variant="outline">{cat}</Button>
 
                         </CarouselItem>
                     ))
