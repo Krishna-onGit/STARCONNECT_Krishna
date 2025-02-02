@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { Popcorn } from "lucide-react";
 import { Projector } from "lucide-react";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
+
 // const Skills = [
 //   "Dramatic Acting",
 //   "Martial Arts",
@@ -18,6 +19,7 @@ import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 //   "Public Speaking",
 // ];
 const isResume = true;
+const isProfilePhoto=true;
 
 
 const Profile = () => {
@@ -32,8 +34,8 @@ const Profile = () => {
   }, [user?.profile?.profilePhoto]);
 
   return (
-    <div className="bg-main-bg">
-      <div className="bg-overlay-bg">
+    <div className="bg-main-bg min-h-screen flex flex-col">
+      <div className="bg-overlay-bg flex-grow">
         <Navbar />
         <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0  border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl  bg-white/45">
           <div className="flex justify-between">
@@ -101,6 +103,23 @@ const Profile = () => {
                 className="font-bold w-full hover:underline cursor-pointer"
               >
                 {user?.profile?.resumeOriginalName}
+              </a>
+            ) : (
+              <span>NA</span>
+            )}
+          </div>
+          {/* //profilephtoto */}
+          <div className="flex  w-full max-w-sm items-center gap-5   ml-6 ">
+            <Label className="text-md font-extrabold text-white">
+              <Projector />
+            </Label>
+            {isProfilePhoto ? (
+              <a
+                target="blank"
+                href={user?.profile?.profilePhoto}
+                className="font-bold w-full hover:underline cursor-pointer"
+              >
+                {user?.profile?.profilePhoto}
               </a>
             ) : (
               <span>NA</span>

@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./Shared/Navbar";
 import HeroSection from "./HeroSection";
 import CategoryCarousel from "./CategoryCarousel";
 import LatestJobs from "./LatestJobs";
 import Footer from "./Shared/Footer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
+import Design from "./Design-UI/Design";
 const Home = () => {
+
+  useGetAllJobs();
+  const { user } = useSelector(store => store.auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user?.role === 'Director') {
+      navigate("/admin/Companies");
+    }
+  }, []);
+
   return (
     // Apply the background to the main div
     <div className="bg-main-bg ">
       <div className="bg-overlay-bg">
 
       <Navbar />
+      
       <HeroSection />
       <CategoryCarousel />
       <LatestJobs />
+      <Design />
       <Footer />
       
       </div>

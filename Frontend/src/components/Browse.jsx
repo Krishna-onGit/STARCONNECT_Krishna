@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./shared/Navbar";
-import Job from "./Job";
+import Job from "./JobCompo";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchedQuery } from "@/Redux/JobSlice";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
@@ -28,7 +28,7 @@ const Browse = () => {
   const currentJobs = allJobs.slice(startIndex, startIndex + jobsPerPage);
 
   return (
-    <div>
+    <div className="bg-main-bg min-h-screen text-white">
       <Navbar />
       <div className="max-w-7xl mx-auto my-10">
         <h1 className="font-bold text-xl my-10">

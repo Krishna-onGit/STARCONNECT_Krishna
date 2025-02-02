@@ -48,15 +48,21 @@ const Navbar = () => {
         </div>
         <div className="flex items-center  gap-10">
           <ul className="flex gap-3 items-center  text-white font-bold">
-            <li>
-              <Link to="/">HOME</Link>
-            </li>
-            <li>
-              <Link to="/Jobs">JOBS</Link>
-            </li>
-            <li>
-              <Link to="/News">NEWS</Link>
-            </li>
+          {
+              user && user.role === 'Director' ? (
+                <>
+                  <li><Link to="/admin/Companies">Companies</Link></li>
+                  <li><Link to="/admin/jobs">Jobs</Link></li>
+                </>
+              ) : (
+                <>
+                  <li><Link to="/">HOME</Link></li>
+                  <li><Link to="/JOBS">JOBS</Link></li>
+                  <li><Link to="/NEWS">NEWS</Link></li>
+                </>
+              )
+            }
+         
           </ul>
           {!user ? (
             <div className="flex items-center gap-2">
