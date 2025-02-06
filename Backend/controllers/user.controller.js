@@ -128,27 +128,40 @@ export const updateProfile = async (req, res) => {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const userId = req.id;
     let user = await User.findById(userId);
+
     if (!user) {
       return res.status(400).json({ message: "User not found", success: false });
     }
 
     let skillsArry = skills ? skills.split(",") : user.profile.skills;
 
+    console.log("Received Files:", req.files);
+
     if (req.files) {
-      if (req.files.profilePhoto) {
-        const fileUri = getDataUri(req.files.profilePhoto);
+      // Handle profile photo upload
+      if (req.files.profilePhoto && req.files.profilePhoto.length > 0) {
+        console.log("Uploading profile photo...");
+        const fileUri = getDataUri(req.files.profilePhoto[0]); // Access first file
         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
         user.profile.profilePhoto = cloudResponse.secure_url;
       }
-      if (req.files.resume) {
-        const resumeUri = getDataUri(req.files.resume);
-        const resumeUpload = await cloudinary.uploader.upload(resumeUri.content);
+
+      // Handle resume upload
+      if (req.files.resume && req.files.resume.length > 0) {
+        console.log("Uploading resume...");
+        const resumeUri = getDataUri(req.files.resume[0]); // Access first file
+        const resumeUpload = await cloudinary.uploader.upload(resumeUri.content, {
+          resource_type: "raw",
+           format: "pdf",
+           folder:"resumes",
+        });
+        console.log("Resume uploaded:", resumeUpload);
         user.profile.resume = resumeUpload.secure_url;
-        user.profile.resumeOriginalName = req.files.resume.originalname;
-        
+        user.profile.resumeOriginalName = req.files.resume[0].originalname;
       }
     }
 
+    // Update user fields
     user.fullname = fullname || user.fullname;
     user.email = email || user.email;
     user.phoneNumber = phoneNumber || user.phoneNumber;
@@ -159,7 +172,7 @@ export const updateProfile = async (req, res) => {
 
     return res.status(200).json({ message: "Profile updated successfully", user, success: true });
   } catch (error) {
-    console.log(error);
+    console.log("Error updating profile:", error);
     res.status(500).json({ message: "Server error", success: false });
   }
 };

@@ -7,6 +7,8 @@ import userRoute from "./routes/user.route.js";
 import applicationRoutes from "./routes/application.route.js";
 import companyRoute from "./routes/company_route.js";
 import jobRoute from "./routes/job_route.js"
+import saveJobRoutes from "./routes/saveJob.route.js";
+
 dotenv.config({});
 
 const app = express();
@@ -29,6 +31,7 @@ app.use("/api/v1/user",userRoute);
 app.use("/api/v1/company",companyRoute)
 app.use("/api/v1/job",jobRoute)
 app.use("/api/v1/application",applicationRoutes);
+app.use("/api/v1/saveJob", saveJobRoutes);
 
 
 

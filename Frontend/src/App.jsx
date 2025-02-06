@@ -4,18 +4,19 @@ import Navbar from "./components/Shared/Navbar";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import Home from "./components/Home";
-import Jobs from "./components/Jobs";
-import News from "./components/News";
-import Profile from "./components/Profile";
-import JobDescripion from "./components/JobDescripion";
-import Browse from "./components/Browse";
-import Companies from "./components/admin/Companies";
-import CompanySetup from "./components/admin/CompanySetup";
-import AdminJobs from "./components/admin/AdminJobs";
-import PostJob from "./components/admin/PostJob";
-import Applicants from "./components/admin/Applicants";
-import CompaniesCreate from "./components/admin/CompaniesCreate";
-import ProtectedRoute from './components/admin/ProtectedRoute.jsx'
+import Jobs from "./components/Actor/Jobs";
+import News from "./components/Actor/News";
+import Profile from "./components/Actor/Profile";
+import JobDescripion from "./components/Actor/JobDescripion";
+import Browse from "./components/Actor/Browse";
+import Companies from "./components/Director/Companies";
+import CompanySetup from "./components/Director/CompanySetup";
+import AdminJobs from "./components/Director/AdminJobs";
+import PostJob from "./components/Director/PostJob";
+import Applicants from "./components/Director/Applicants";
+import CompaniesCreate from "./components/Director/CompaniesCreate";
+import ProtectedRoute from './components/Director/ProtectedRoute.jsx';
+
 
 const appRouter = createBrowserRouter([
   {

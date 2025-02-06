@@ -32,7 +32,7 @@ const Navbar = () => {
    
   };
   return (
-    <div className="pt-5 w-full z-20 ">
+    <div className="pt-5 w-full z-20 bg-transparent ">
       <div className="flex  items-center justify-between mx-auto max-w-7xl h-16 px-4">
         <div className="flex items-center gap-2 ">
           <Link to="/">
