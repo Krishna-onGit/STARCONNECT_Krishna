@@ -1,15 +1,17 @@
-
 import express from "express";
-import { saveJob, getSavedJobs } from "../controllers/SavedJob.controller.js";
-import isAuthenticated from "../middlewares/isAuthenticated.js"; // Ensure user is logged in
+import { saveJob, getSavedJobs, deleteSavedJob } from "../controllers/SavedJob.controller.js";
+import isAuthenticated from "../middlewares/isAuthenticated.js";
 
 const router = express.Router();
 
-// Save a job for a user
-router.post("/saveJob", isAuthenticated, saveJob);
+// POST to save a job
+router.post("/", isAuthenticated, saveJob);
 
-// Get saved jobs for a user
-router.get("/savedJobs", isAuthenticated, getSavedJobs);
+// GET to fetch all saved jobs for the logged-in user
+router.get("/", isAuthenticated, getSavedJobs);
 
+// DELETE to remove a saved job (pass jobId as a URL parameter)
+router.delete("/saveJob/:jobId", isAuthenticated, deleteSavedJob);
 
 export default router;
+

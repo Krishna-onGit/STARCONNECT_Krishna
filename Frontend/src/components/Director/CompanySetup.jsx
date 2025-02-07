@@ -51,6 +51,7 @@ const CompanySetup = () => {
         }
         try{
             setLoading(true);
+            console.log("Updating company with:", formData);
             const res=await axios.put(`${COMPANY_API_END_POINT}/update/${params.id}`,formData,{
                 headers:{
                     "Content-Type":"multipart/form-data"
@@ -61,15 +62,16 @@ const CompanySetup = () => {
                 toast.success(res.data.message);
                 navigate("/admin/companies");
             }
-        }catch(error){
-            console.log(error);
-            toast.error(error.response.data.message);
+        }catch (error) {
+            console.log("Error Response:", error.response?.data);
+            toast.error(error.response?.data?.message || "Failed to update company");
         }finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
+        console.log("singleCompany:", singleCompany); 
           setInput({
                 name: singleCompany.name || "",
                 description: singleCompany.description || "",

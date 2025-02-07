@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { Popcorn } from "lucide-react";
 import { Projector } from "lucide-react";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
+import SavedJobs from "@/components/Actor/SavedJobs";
 
 // const Skills = [
 //   "Dramatic Acting",
@@ -138,12 +139,18 @@ const Profile = () => {
               <span>NA</span>
             )}
           </div>
+           {/* Saved Jobs Section */}
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl mt-5">
+          <h1 className="font-bold text-lg my-5 p-5">Saved Jobs</h1>
+          <SavedJobs />
+        </div>
         </div>
 
         <div className="max-w-4xl mx-auto bg-white rounded-2xl">
           <h1 className="font-bold text-lg my-5 p-5">Applied Jobs</h1>
           <AppliedJobTabel />
         </div>
+       
 
         <UpdateProfileDailog open={open} setOpen={setOpen} />
       </div>

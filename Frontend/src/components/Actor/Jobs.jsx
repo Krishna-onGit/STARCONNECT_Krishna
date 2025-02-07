@@ -14,11 +14,12 @@ const Jobs = () => {
     if (searchedQuery) {
       const filteredJobs = allJobs.filter((job) => {
         return (
-          job.title.toLowercase().includes(searchedQuery.toLowercase()) ||
-          job.description.toLowercase().includes(searchedQuery.toLowercase()) ||
-          job.description.toLowercase().includes(searchedQuery.toLowercase())
+          job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.location.toLowerCase().includes(searchedQuery.toLowerCase())
         );
       });
+      setFilterJobs(filteredJobs);
     } else {
       setFilterJobs(allJobs);
     }
@@ -38,7 +39,6 @@ const Jobs = () => {
               <div className="grid grid-cols-3 gap-4">
                 {filterJobs.map((job) => (
                   <Job job={job} />
-                  
                 ))}
               </div>
             </div>

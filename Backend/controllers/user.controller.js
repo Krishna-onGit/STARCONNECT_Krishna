@@ -15,8 +15,8 @@ export const register = async (req, res) => {
         success: false,
       });
     }
-    const file = req.file;
-    const fileUri = getDataUri(file);
+    const files = req.files;
+    const fileUri = getDataUri(req.files.profilePhoto[0]);
     const cloudResponse= await cloudinary.uploader.upload(fileUri.content);
 
     const user = await User.findOne({ email });

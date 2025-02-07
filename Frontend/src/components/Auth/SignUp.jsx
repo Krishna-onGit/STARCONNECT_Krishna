@@ -33,33 +33,43 @@ const SignUp = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const fromData = new FormData();
-    fromData.append("fullname", input.fullname);
-    fromData.append("email", input.email);
-    fromData.append("phoneNumber", input.phoneNumber);
-    fromData.append("password", input.password);
-    fromData.append("role", input.role);
+    const formData = new FormData();
+    formData.append("fullname", input.fullname);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    
+    // Append profile photo (must match backend field name)
     if (input.file) {
-      fromData.append("file", input.file);
+      formData.append("profilePhoto", input.file); 
     }
+    
+    // Append resume if provided
+    if (input.resumeFile) {
+      formData.append("resume", input.resumeFile);
+    }
+    
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`, fromData, {
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: true,
       });
+    
       if (res.data.success) {
         navigate("/login");
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       dispatch(setLoading(false));
     }
+    
   };
 
   return (

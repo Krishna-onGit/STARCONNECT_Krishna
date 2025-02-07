@@ -21,7 +21,7 @@ export const saveJob = async (req, res) => {
       const savedJob = new SavedJob({ user: userId, job: jobId });
       await savedJob.save();
   
-      res.status(201).json({ message: "Job saved successfully.", savedJob });
+      return res.status(201).json({ message: "Job saved successfully.", savedJob });
     } catch (error) {
       console.error("Error saving job:", error);
       res.status(500).json({ message: "Server error." });
@@ -40,3 +40,18 @@ export const saveJob = async (req, res) => {
       res.status(500).json({ message: "Server error." });
     }
   };
+  // Delete a saved job for a user
+export const deleteSavedJob = async (req, res) => {
+  const { jobId } = req.params;
+  const userId = req.user._id;
+  try {
+    const deleted = await SavedJob.findOneAndDelete({ user: userId, job: jobId });
+    if (!deleted) {
+      return res.status(404).json({ message: "Saved job not found.", success: false });
+    }
+    return res.status(200).json({ message: "Saved job deleted successfully.", success: true });
+  } catch (error) {
+    console.error("Error deleting saved job:", error);
+    return res.status(500).json({ message: "Server error.", success: false });
+  }
+};

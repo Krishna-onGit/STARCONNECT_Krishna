@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { toast } from "sonner";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
@@ -20,28 +21,36 @@ const Job = ({ job }) => {
     const timeDifference = currentTime - createdAt;
     return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
   };
-  const handleSaveJob = async (job) => {
+
+  const handleSaveJob = async (jobs) => {
     try {
-      const response = await axios.post("/api/saveJob", {
-        userId: user._id, // Ensure this matches the required data structure
-        jobId: job._id,  // Ensure this matches the required data structure
-      });
-      console.log("Job saved successfully:", response.data);
-      setIsSaved(true);
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/jobs/saveJob", // No extra "/saveJob" at the end
+        { jobs },
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        toast.success("Job saved successfully!");
+        setIsSaved(true);
+      } else {
+        toast.error(res.data.message || "Failed to save job");
+      }
     } catch (error) {
-      console.error("Error saving job:", error);
+      console.error("Error saving job:", error.response?.data || error.message);
+      toast.error("Failed to save job");
     }
   };
-  
 
   return (
     <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100">
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">
           {job?.createdAt
-          ? daysAgoFunction(job?.createdAt) === 0
-            ? "Today"
-            : `${daysAgoFunction(job?.createdAt)} days ago`: "No date available"}
+            ? daysAgoFunction(job?.createdAt) === 0
+              ? "Today"
+              : `${daysAgoFunction(job?.createdAt)} days ago`
+            : "No date available"}
         </p>
         <Button variant="outline" className="rounded-full bg-black" size="icon">
           <Bookmark />
@@ -80,13 +89,14 @@ const Job = ({ job }) => {
           variant="outline"
           className="bg-black"
         >
-          {" "}
           Details
         </Button>
         <Button
-         onClick={handleSaveJob} 
+          onClick={() => handleSaveJob(job?._id)}
           variant="outline"
-          className={`bg-black ${isSaved ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`bg-black ${
+            isSaved ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={isSaved}
         >
           {isSaved ? "Saved" : "Save For Later"}

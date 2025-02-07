@@ -101,3 +101,33 @@ export const getAdminJobs = async (req, res) => {
         console.log(error);
     }
 }
+export const saveJob = async (req, res) => {
+    try {
+      const { jobId } = req.body;
+      const userId = req.user.id; // Assuming `isAuthenticated` middleware sets `req.user`
+  
+      if (!jobId) {
+        return res.status(400).json({ success: false, message: "Job ID is required" });
+      }
+  
+      // Find the user and update their saved jobs list
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+  
+      // Check if job is already saved
+      if (user.savedJobs.includes(jobId)) {
+        return res.status(400).json({ success: false, message: "Job already saved" });
+      }
+  
+      user.savedJobs.push(jobId);
+      await user.save();
+  
+      res.status(200).json({ success: true, message: "Job saved successfully!" });
+    } catch (error) {
+      console.error("Error saving job:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+  };
+  
