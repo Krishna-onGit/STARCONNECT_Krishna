@@ -70,7 +70,7 @@ const InfiniteMovingCards = ({
         {items.map((item, idx) => (
           <li
             key={idx}
-            className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px]"
+            className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-white px-8 py-6 md:w-[450px]"
           >
             {/* Background image with opacity overlay */}
             <div
@@ -79,19 +79,19 @@ const InfiniteMovingCards = ({
                 backgroundImage: `url(${item.imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.5,  // Apply opacity only to the background image
+                opacity: 0.6,  // Apply opacity only to the background image
                 zIndex: -1,  // Ensure background stays behind the text
                 filter: "sepia(0.5) brightness(0.8) contrast(1.5)",  // Vintage effect
 
               }}
             />
             <blockquote>
-              <span className="relative z-20 text-l leading-[1.6] text-white font-bold">
+              <span className="relative z-20 text-l text-center leading-[1.6] text-white font-bold">
                 {item.quote}
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className="text-sm leading-[1.6] text-gray-400 font-normal">
+                  <span className="text-sm leading-[1.6] text-gray-200 font-normal">
                     {item.name}
                   </span>
                   <span className="text-sm leading-[1.6] text-gray-400 font-normal">

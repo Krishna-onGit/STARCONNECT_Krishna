@@ -27,7 +27,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
@@ -36,18 +36,28 @@ const Login = () => {
         },
         withCredentials: true,
       });
+  
       if (res.data.success) {
-        dispatch(setUser(res.data.user));
-        navigate("/");
+        const user = res.data.user;
+        dispatch(setUser(user));
+  
+        // Redirect based on user role
+        if (user.role === "Director") {
+          navigate("/admin"); // Change this to your actual CD-Home route
+        } else {
+          navigate("/");
+        }
+  
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Login failed");
     } finally {
       dispatch(setLoading(false));
     }
   };
+  
 
   return (
     <div className="bg-main-bg min-h-screen flex flex-col ">

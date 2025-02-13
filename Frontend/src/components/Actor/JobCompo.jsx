@@ -1,45 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { saveJob, deleteSavedJob } from "@/Redux/savedJobsSlice";
 
-const Job = ({ job }) => {
+const JobCompo = ({ job, savedJobs }) => {
   const navigate = useNavigate();
-  //save for later feature
-  const [isSaved, setIsSaved] = useState(false);
-  const { user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
 
-  // const JobId="hhahhaha"
+  // Check if job is saved
+  const isSaved = savedJobs?.some((savedJob) => savedJob.job?._id === job._id);
+
+
+  // Save or remove job
+  const handleSaveJob = () => {
+    if (isSaved) {
+      dispatch(deleteSavedJob(job._id));
+    } else {
+      dispatch(saveJob(job._id)); // ✅ Pass only job._id
+    }
+  };
+
+  // Function to calculate days since job was posted
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
     const currentTime = new Date();
     const timeDifference = currentTime - createdAt;
-    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
-  };
-
-  const handleSaveJob = async (jobs) => {
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/jobs/saveJob", // No extra "/saveJob" at the end
-        { jobs },
-        { withCredentials: true }
-      );
-
-      if (res.data.success) {
-        toast.success("Job saved successfully!");
-        setIsSaved(true);
-      } else {
-        toast.error(res.data.message || "Failed to save job");
-      }
-    } catch (error) {
-      console.error("Error saving job:", error.response?.data || error.message);
-      toast.error("Failed to save job");
-    }
+    return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
   };
 
   return (
@@ -52,14 +42,15 @@ const Job = ({ job }) => {
               : `${daysAgoFunction(job?.createdAt)} days ago`
             : "No date available"}
         </p>
-        <Button variant="outline" className="rounded-full bg-black" size="icon">
-          <Bookmark />
-        </Button>
       </div>
+
       <div className="flex items-center gap-2 my-2">
         <Button className="p-6" variant="outline" size="icon">
           <Avatar>
-            <AvatarImage src={job?.company?.logo} />
+            <AvatarImage
+              src={job?.company?.logo || "/default-company-logo.png"} // ✅ Fallback image
+              alt="Company Logo"
+            />
           </Avatar>
         </Button>
         <div>
@@ -69,10 +60,11 @@ const Job = ({ job }) => {
       </div>
 
       <div>
-        <h1 className="font-bold text-lg my-2">{job?.title} </h1>
+        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
         <p className="text-sm text-gray-600">{job?.description}</p>
       </div>
-      <div className="flex items-center gap-2 mt-4 ">
+
+      <div className="flex items-center gap-2 mt-4">
         <Badge className={"text-blue-700 font-bold"} variant="ghost">
           {job?.position}
         </Badge>
@@ -83,6 +75,7 @@ const Job = ({ job }) => {
           {job?.salary}
         </Badge>
       </div>
+
       <div className="flex items-center gap-4 mt-4">
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
@@ -92,18 +85,17 @@ const Job = ({ job }) => {
           Details
         </Button>
         <Button
-          onClick={() => handleSaveJob(job?._id)}
           variant="outline"
-          className={`bg-black ${
-            isSaved ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isSaved}
+          className={`rounded-sm ${isSaved ? "bg-green-500" : "bg-black"}`}
+          size="icon"
+          onClick={handleSaveJob} // ✅ Remove disabled={isSaved}
         >
-          {isSaved ? "Saved" : "Save For Later"}
+          {isSaved ? "Saved" : "Save for Later"}
+          <Bookmark />
         </Button>
       </div>
     </div>
   );
 };
 
-export default Job;
+export default JobCompo;

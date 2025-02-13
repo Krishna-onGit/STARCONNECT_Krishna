@@ -38,7 +38,7 @@ export const register = async (req, res) => {
       }
     });
     return res.status(201).json({
-      message: "Accoutn created successfully.",
+      message: "Account created successfully.",
       success: true,
     });
   } catch (error) {
@@ -177,3 +177,17 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+export const getUserProfile = async (req, res) => {
+  try {
+      const actorId = req.params.id;
+      const actorProfile = await User.findById(actorId).populate("profile");
+
+      if (!actorProfile) {
+          return res.status(404).json({ success: false, message: "Actor not found" });
+      }
+
+      res.status(200).json({ success: true, user: actorProfile });
+  } catch (error) {
+      res.status(500).json({ success: false, message: "Server Error" });
+  }
+};

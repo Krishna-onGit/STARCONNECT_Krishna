@@ -15,6 +15,11 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const profilePath =
+    user?.role === "Director"
+      ? `/admin/CDprofile/${user._id}` // Director Profile
+      : "/profile"; // Actor Profile
+   
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {
@@ -28,16 +33,16 @@ const Navbar = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
-    }
-   
+    };
+  
   };
   return (
     <div className="pt-5 w-full z-20 bg-transparent ">
       <div className="flex  items-center justify-between mx-auto max-w-7xl h-16 px-4">
         <div className="flex items-center gap-2 ">
-          <Link to="/">
+        <Link to={user?.role === "Director" ? "/admin" : "/"}>
         <img
-            src="/Images/STARCONNECT.svg"
+            src={"/Images/STARCONNECT.svg"}
             alt="StarConnect Logo"
             className="size-4/12"
           />
@@ -51,8 +56,10 @@ const Navbar = () => {
           {
               user && user.role === 'Director' ? (
                 <>
-                  <li><Link to="/admin/Companies">Companies</Link></li>
-                  <li><Link to="/admin/jobs">Jobs</Link></li>
+                   <li><Link to="/admin">HOME</Link></li>
+                  <li><Link to="/admin/Companies">COMPANIES</Link></li>
+                  <li><Link to="/admin/jobs">JOBS</Link></li>
+                 
                 </>
               ) : (
                 <>
@@ -101,7 +108,7 @@ const Navbar = () => {
                   <div className="flex w-fit items-center gap-2 cursor-pointer">
                     <User2 />
                     <Button variant="link">
-                      <Link to="/Profile">View profile</Link>
+                      <Link to={profilePath}>View profile</Link>
                     </Button>
                   </div>
 

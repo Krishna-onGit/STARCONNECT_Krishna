@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const SavedJobs = () => {
-  const [savedJobs, setSavedJobs] = useState([]); // Ensure it's an array
+  const [savedJobs, setSavedJobs] = useState([]); // ✅ Ensure it's an array
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -13,11 +13,11 @@ const SavedJobs = () => {
     try {
       setLoading(true);
       const res = await axios.get("/api/v1/jobs/savedJobs", { withCredentials: true });
-  
+
       if (res.data.success && Array.isArray(res.data.jobs)) {
         setSavedJobs(res.data.jobs);
       } else {
-        setSavedJobs([]);
+        setSavedJobs([]); // ✅ Ensure no unexpected data
         console.error("Unexpected API response:", res.data);
       }
     } catch (error) {
@@ -28,7 +28,6 @@ const SavedJobs = () => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchSavedJobs();
@@ -36,10 +35,11 @@ const SavedJobs = () => {
 
   const handleDelete = async (jobId) => {
     try {
-      const res = await axios.delete(`/api/v1/saveJob/${jobId}`, { withCredentials: true });
+      const res = await axios.delete(`/api/v1/save-job/${jobId}`, { withCredentials: true });
+
       if (res.data.success) {
         toast.success(res.data.message);
-        fetchSavedJobs(); // Refresh the list after deletion
+        setSavedJobs((prev) => prev.filter((saved) => saved?.job?._id !== jobId)); // ✅ Remove locally
       }
     } catch (error) {
       console.error("Error deleting saved job:", error.response?.data || error.message);
@@ -53,7 +53,7 @@ const SavedJobs = () => {
 
       {loading ? (
         <p>Loading...</p>
-      ) : Array.isArray(savedJobs) && savedJobs.length > 0 ? (
+      ) : savedJobs.length > 0 ? (
         savedJobs.map((saved) => (
           <div key={saved._id} className="border p-4 my-2 flex justify-between items-center">
             <div>

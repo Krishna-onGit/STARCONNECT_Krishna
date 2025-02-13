@@ -4,14 +4,14 @@ import { ImagesSlider } from "../ui/images-slider";
 
 export function ImagesSliderDemo() {
   const images = [
-    "/Images/theater.jpg",
-    "/Images/cinematic.jpg",
-    "/Images/clapshot.jpg",
-    "/Images/flim set.jpg",
-    "/Images/crew.jpg",
-    "/Images/shooting.jpg",
-    "/Images/music.jpg",
-    "/Images/aesthetic.jpg",
+    "/Images/theater.jpg",//done
+    "/Images/shooting.jpg",//done
+    "/Images/img3.jpg",
+    "/Images/imggg1.jpg",
+    "/Images/img14.jpg",//done
+    "/Images/flimset.jpg",//done
+    "/Images/imggg.jpg",
+    "/Images/image6.jpg",
 
 
   ];
@@ -20,7 +20,7 @@ export function ImagesSliderDemo() {
     
     // The pointer-events-none class on this container ensures that the background slider doesn’t capture clicks.
     <ImagesSlider
-      className="absolute inset-0 h-full pointer-events-none opacity-40" 
+      className="absolute inset-0 h-full pointer-events-none bg-opacity-40" 
       images={images}
     >
       {/* The overlay content is wrapped with pointer-events-auto so it can capture clicks */}

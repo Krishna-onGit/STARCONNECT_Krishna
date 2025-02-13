@@ -11,7 +11,8 @@ import { useSelector } from "react-redux";
 import { Popcorn } from "lucide-react";
 import { Projector } from "lucide-react";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
-import SavedJobs from "@/components/Actor/SavedJobs";
+import useGetSavedJobs from "@/hooks/useGetSavedJobs";
+import SavedJobTable from "../Actor/SavedJobTable";
 
 // const Skills = [
 //   "Dramatic Acting",
@@ -27,6 +28,7 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   const [refresh, setRefresh] = useState(false);
+
 
   // Ensure user is defined before accessing properties
   if (!user || !user.profile) {
@@ -139,11 +141,11 @@ const Profile = () => {
               <span>NA</span>
             )}
           </div>
-           {/* Saved Jobs Section */}
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl mt-5">
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl">
           <h1 className="font-bold text-lg my-5 p-5">Saved Jobs</h1>
-          <SavedJobs />
+          <SavedJobTable />
         </div>
+    
         </div>
 
         <div className="max-w-4xl mx-auto bg-white rounded-2xl">
