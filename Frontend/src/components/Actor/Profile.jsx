@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Shared/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Contact, Mail, Pen } from "lucide-react";
+import { Calendar, Contact, Mail, Pen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@radix-ui/react-label";
 import AppliedJobTabel from "@/components/Actor/AppliedJobTabel";
@@ -11,8 +11,6 @@ import { useSelector } from "react-redux";
 import { Popcorn } from "lucide-react";
 import { Projector } from "lucide-react";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
-import useGetSavedJobs from "@/hooks/useGetSavedJobs";
-import SavedJobTable from "../Actor/SavedJobTable";
 
 // const Skills = [
 //   "Dramatic Acting",
@@ -20,7 +18,7 @@ import SavedJobTable from "../Actor/SavedJobTable";
 //   "Horseback Riding",
 //   "Public Speaking",
 // ];
-const isResume = true;
+// const isResume = true;
 const isProfilePhoto = true;
 
 const Profile = () => {
@@ -107,7 +105,18 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="flex w-full max-w-sm items-center gap-5 ml-6">
+          <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3 ">
+            <Label className="text-md font-extrabold text-white">
+              <Calendar />
+            </Label>
+            {user?.profile?.age ? (//changed
+              user.profile.age
+            ) : (
+              <span className="text-red-500">Age not Defined</span>
+            )}
+          </div>
+
+          {/* <div className="flex w-full max-w-sm items-center gap-5 ml-6">
             <Label className="text-md font-extrabold text-white">
               <Projector />
             </Label>
@@ -122,7 +131,7 @@ const Profile = () => {
             ) : (
               <span className="text-red-500">Resume not available</span>
             )}
-          </div>
+          </div> */}
 
           {/* Profile Photo Link */}
           <div className="flex w-full max-w-sm items-center gap-5 ml-6">
@@ -141,10 +150,7 @@ const Profile = () => {
               <span>NA</span>
             )}
           </div>
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl">
-          <h1 className="font-bold text-lg my-5 p-5">Saved Jobs</h1>
-          <SavedJobTable />
-        </div>
+          
     
         </div>
 

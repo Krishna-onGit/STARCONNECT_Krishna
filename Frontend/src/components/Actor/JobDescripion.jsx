@@ -92,9 +92,37 @@ const JobDescripion = ({job}) => {
         <h1 className="font-bold my-1">Location: <span className="pl-4 font-normal text-gray-800">{singleJob?.location}</span></h1>
         <h1 className="font-bold my-1">Description: <span className="pl-4 font-normal text-gray-800">{singleJob?.description}</span></h1>
         <h1 className="font-bold my-1">Experience: <span className="pl-4 font-normal text-gray-800">{singleJob?.experience} yrs</span></h1>
-        <h1 className="font-bold my-1">Salary: <span className="pl-4 font-normal text-gray-800">{singleJob?.salary}LPA</span></h1>
+        <h1 className="font-bold my-1">Salary: <span className="pl-4 font-normal text-gray-800">{singleJob?.salaryPerDay}LPA</span></h1>
         <h1 className="font-bold my-1">Total Applicants: <span className="pl-4 font-normal text-gray-800">{singleJob?.applications?.length}</span></h1>
         <h1 className="font-bold my-1">Posted Date: <span className="pl-4 font-normal text-gray-800">{singleJob?.createdAt.split("T")[0]}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.projectType}</span></h1>
+
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.subProjectType}</span></h1>
+
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.subGenres}</span></h1>
+
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.roleType}</span></h1>
+
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.roleName}</span></h1>
+
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.gender}</span></h1>
+        {/* <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.age}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.height}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.weight}</span></h1> */}
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.skills}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.roleDescription}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.mediaRequirement}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.expectedWorkHours}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.expectedCompletionTime}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.specialSubmissionAuditions}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.auditionDetails}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.company}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.created_by}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.age}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.age}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.age}</span></h1>
+        <h1 className="font-bold my-1">Project Type <span className="pl-4 font-normal text-gray-800">{singleJob?.age}</span></h1>
+
       </div>
     </div>
     </div>

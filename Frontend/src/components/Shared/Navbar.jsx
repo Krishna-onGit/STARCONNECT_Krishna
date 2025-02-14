@@ -59,6 +59,7 @@ const Navbar = () => {
                    <li><Link to="/admin">HOME</Link></li>
                   <li><Link to="/admin/Companies">COMPANIES</Link></li>
                   <li><Link to="/admin/jobs">JOBS</Link></li>
+                  <li><Link to="/admin/FindTalent">Find Talent</Link> </li>
                  
                 </>
               ) : (

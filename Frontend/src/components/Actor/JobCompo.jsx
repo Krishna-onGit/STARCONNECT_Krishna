@@ -5,24 +5,14 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { saveJob, deleteSavedJob } from "@/Redux/savedJobsSlice";
+
 
 const JobCompo = ({ job, savedJobs }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // Check if job is saved
-  const isSaved = savedJobs?.some((savedJob) => savedJob.job?._id === job._id);
-
-
-  // Save or remove job
-  const handleSaveJob = () => {
-    if (isSaved) {
-      dispatch(deleteSavedJob(job._id));
-    } else {
-      dispatch(saveJob(job._id)); // ✅ Pass only job._id
-    }
-  };
+ 
 
   // Function to calculate days since job was posted
   const daysAgoFunction = (mongodbTime) => {
@@ -60,7 +50,7 @@ const JobCompo = ({ job, savedJobs }) => {
       </div>
 
       <div>
-        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+        <h1 className="font-bold text-lg text-black my-2">{job?.title}</h1>
         <p className="text-sm text-gray-600">{job?.description}</p>
       </div>
 
@@ -84,15 +74,7 @@ const JobCompo = ({ job, savedJobs }) => {
         >
           Details
         </Button>
-        <Button
-          variant="outline"
-          className={`rounded-sm ${isSaved ? "bg-green-500" : "bg-black"}`}
-          size="icon"
-          onClick={handleSaveJob} // ✅ Remove disabled={isSaved}
-        >
-          {isSaved ? "Saved" : "Save for Later"}
-          <Bookmark />
-        </Button>
+       
       </div>
     </div>
   );

@@ -6,17 +6,27 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux' 
 import AdminJobsTable from './AdminJobsTable'
 import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs'
-import { setSearchJobByText } from '@/Redux/JobSlice'
+import { setSearchJobByTitle,setSearchJobByCompany} from '@/Redux/JobSlice'
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
-  const [input, setInput] = useState("");
+  const [companyInput, setCompanyInput] = useState("");
+  const [titleInput, setTitleInput] = useState("");
+  // const [input, setInput] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setSearchJobByText(input));
-  }, [input]);
+  // useEffect(() => {
+  //   dispatch(setSearchJobByText(input));
+  // }, [input]);
+  useEffect(() => {//added
+    dispatch(setSearchJobByCompany(companyInput));
+  }, [companyInput]);
+
+  useEffect(() => {//added
+    dispatch(setSearchJobByTitle(titleInput));
+  }, [titleInput]);
+
   return (
     <div className='bg-main-bg min-h-screen'>
       <div className='bg-overlay-bg min-h-screen'>
@@ -26,8 +36,15 @@ const AdminJobs = () => {
         <div className='flex items-center justify-between my-5'>
           <Input
             className="w-fit"
-            placeholder="Filter by name, role"
-            onChange={(e) => setInput(e.target.value)}
+            placeholder="Filter by Name"
+            //onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setCompanyInput(e.target.value)}//added
+          />
+          <Input
+            className="w-fit"
+            placeholder="Filter by Movie"
+            // onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setTitleInput(e.target.value)}//added
           />
           <Button onClick={() => navigate("/admin/jobs/create")}>New Jobs</Button>
         </div>

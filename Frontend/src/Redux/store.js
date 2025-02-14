@@ -3,7 +3,7 @@ import authSlice from "./authSlice";
 import jobSlice from "./JobSlice";
 import companySlice from "./CompanySlice";
 import applicationSlice from "./applicationSlice";
-import savedJobsSlice from "./savedJobsSlice"; 
+
 import {
     persistStore,
     persistReducer,
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
     job: jobSlice,
     company: companySlice,
     application: applicationSlice,
-    savedJobs: savedJobsSlice, 
+    
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
