@@ -1,129 +1,3 @@
-// import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import Login from "./components/Auth/Login";
-// import SignUp from "./components/Auth/SignUp";
-// import Home from "./components/Home";
-// import Jobs from "./components/Actor/Jobs";
-// import News from "./components/Actor/News";
-// import Profile from "./components/Shared/Profile";
-// import JobDescripion from "./components/Actor/JobDescripion";
-// import Browse from "./components/Actor/Browse";
-// import Companies from "./components/Director/Companies";
-// import CompanySetup from "./components/Director/CompanySetup";
-// import AdminJobs from "./components/Director/AdminJobs";
-// import PostJob from "./components/Director/PostJob";
-// import Applicants from "./components/Director/Applicants";
-// import CompaniesCreate from "./components/Director/CompaniesCreate";
-// import ProtectedRoute from "./components/Director/ProtectedRoute.jsx";
-// import CDhome from "./components/CDhome";
-
-// const appRouter = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Home />,
-//   },
-//   {
-//     path: "/Login",
-//     element: <Login />,
-//   },
-//   {
-//     path: "/SignUp",
-//     element: <SignUp />,
-//   },
-//   {
-//     path: "/Jobs",
-//     element: <Jobs />,
-//   },
-//   {
-//     path: "/description/:id",
-//     element: <JobDescripion />,
-//   },
-//   {
-//     path: "/News",
-//     element: <News />,
-//   },
-//   {
-//     path: "/Profile",
-//     element: <Profile />,
-//   },
-//   {
-//     path: "browse",
-//     element: <Browse />,
-//   },
-//   //for admin
-//   {
-//     path: "/admin",
-//     element: (
-//       <ProtectedRoute>
-//         <CDhome />
-//       </ProtectedRoute>
-//     ),
-//   },
-
-//   {
-//     path: "/admin/companies",
-//     element: (
-//       <ProtectedRoute>
-//         <Companies />
-//       </ProtectedRoute>
-//     ),
-//   },
-//   {
-//     path: "/admin/companies/create",
-//     element: (
-//       <ProtectedRoute>
-//         <CompaniesCreate />
-//       </ProtectedRoute>
-//     ),
-//   },
-//   {
-//     //actual path is
-//     path: "/admin/companies/:id",
-//     //path: "/admin/companies/setup",
-//     element: (
-//       <ProtectedRoute>
-//         <CompanySetup />
-//       </ProtectedRoute>
-//     ),
-//   },
-
-//   //for admin to post Jobs
-//   {
-//     path: "/admin/jobs",
-//     element: (
-//       <ProtectedRoute>
-//         <AdminJobs />
-//       </ProtectedRoute>
-//     ),
-//   },
-//   {
-//     path: "/admin/jobs/create",
-//     element: (
-//       <ProtectedRoute>
-//         <PostJob />
-//       </ProtectedRoute>
-//     ),
-//   },
-//   {
-//     //path:"/admin/jobs/application",
-//     path: "/admin/jobs/:id/applicants",
-//     element: (
-//       <ProtectedRoute>
-//         <Applicants />
-//       </ProtectedRoute>
-//     ),
-//   },
-// ]);
-
-// function App() {
-//   return (
-//     <>
-//       <RouterProvider router={appRouter} />
-//     </>
-//   );
-// }
-
-// export default App;
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
@@ -153,6 +27,9 @@ const PersonalProfile = lazy(() =>
   import("./components/Actor/PersonalProfile")
 );
 const FindTalent =lazy(()=> import("./components/Director/FindTalent"));
+const FindDirector =lazy(()=> import("./components/Actor/FindDirector"));
+const CDPersonalProfile =lazy(()=> import("./components/Director/CDPersonalProfile"));
+
 
 const appRouter = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -163,7 +40,8 @@ const appRouter = createBrowserRouter([
   { path: "/news", element: <News /> },
   { path: "/browse", element: <Browse /> },
   { path: "/profile/", element: <Profile /> },
-
+  { path: "/FindDirector",element:<FindDirector />},
+  { path: "/Director/profile/:id",element:<CDPersonalProfile />},
   // Admin Routes
   {
     path: "/admin",

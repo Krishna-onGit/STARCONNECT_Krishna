@@ -3,56 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Styles */
-  /* Step 1: Define custom keyframes for moving gradients */
-  /* @keyframes move-gradient {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 100% 0%;
-    }
-  }
-  
-  @keyframes move-vertical {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 0% 100%;
-    }
-  }
-  
-  @keyframes move-diagonal {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 100% 100%;
-    }
-  } */
-  
-  /* Step 2: Add the custom classes for the moving backgrounds */
-
-  /* .bg-moving-horizontal {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 1) 100%);
-    background-size: 200% 100%;
-    animation: move-gradient 10s ease-in-out infinite;
-  }
-  
-  .bg-moving-vertical {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 1) 100%);
-     background-size: 100% 600%;
-    animation: move-vertical 15s ease-in-out infinite;
-  }
-  
-  .bg-moving-diagonal {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 1) 100%);
-    background-size: 200% 200%;
-    animation: move-diagonal 10s ease-in-out infinite;
-  } */
-  
-  @layer base {
+@layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -80,12 +31,11 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --main-bg: #000000;
-    --blue-text: #48CFCB;
-    --beige-text: #F0BB78;
-    --purple-col:#6A38C2;
-    
-  
+    --blue-text: #48cfcb;
+    --beige-text: #f0bb78;
+    --purple-col: #6a38c2;
   }
+  
 
   .dark {
     --background: 240 10% 3.9%;
@@ -118,7 +68,6 @@
   /* Global Styles */
   html,
   body {
-    
     margin: 0;
     padding: 0;
   }

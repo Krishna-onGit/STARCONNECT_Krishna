@@ -83,30 +83,22 @@ const PersonalProfile = () => {
                 {actor.phoneNumber || "No number provided"}
               </span>
             </div>
+
+            
+            <div className="my-2">
+              <div className="flex items-center gap-5 my-2 font-bold">
+              <Label className="text-black">
+              <Popcorn />
+            </Label>
             {actor.profile?.skills?.map((skill, index) => (
-              <Badge className="text-base px-3 py-0.1" key={index}>
+              <Badge className="text-base" key={index}>
                 {skill}
               </Badge>
             ))}
-          </div>
-
-          {/* Skills
-          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
-            <Label className="text-black">
-              <Popcorn />
-            </Label>
-            <div className="flex items-center gap-1">
-              {actor.profile?.skills && actor.profile?.actor.length > 0 ? (
-                actor.profile.skills.map((skill, index) => (
-                  <Badge className="text-base px-3 py-0.1" key={index}>
-                    {skill}
-                  </Badge>
-                ))
-              ) : (
-                <span>N/A</span>
-              )}
+              </div>
             </div>
-          </div> */}
+            
+          </div>
         </div>
       </div>
     </div>

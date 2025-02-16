@@ -7,8 +7,8 @@ const AppliedJobTabel = () => {
     const {allAppliedJobs}= useSelector(store=>store.job);
   return (
     <div className='px-4'>
-         <Table className=" border border-gray-200 backdrop-blur-xl bg-white/45 rounded-2xl">
-            <TableCaption className="py-3">A list of your recent applied jobs</TableCaption>
+         <Table className="backdrop-blur-xl bg-white/45 rounded-2xl">
+            <TableCaption className="py-3 ">A list of your recent applied jobs</TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead>Date</TableHead>
@@ -17,11 +17,11 @@ const AppliedJobTabel = () => {
                     <TableHead className="text-right">Status</TableHead>    
                 </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="rounded-2xl">
             {
                         allAppliedJobs.length <= 0 ? (
                             <tr>
-                                <td colSpan="4" className="text-center py-4">You haven't applied to any jobs</td>
+                                <td colSpan="4" className="text-center py-4 ">You haven't applied to any jobs</td>
                             </tr>
                         ) : (
                             allAppliedJobs.map((appliedjob) => (

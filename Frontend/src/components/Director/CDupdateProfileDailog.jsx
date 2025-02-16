@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components//ui/button";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { Label } from "@/components//ui/label";
+import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/util/constant";
@@ -21,190 +21,236 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
   const { user } = useSelector((store) => store.auth);
 
   const [input, setInput] = useState({
-    fullname: user?.fullname,
-    email: user?.email,
-    phoneNumber: user?.phoneNumber,
-    bio: user?.profile?.bio,
-    skills: user?.profile?.skills?.map((skill) => skill),
-    file: user?.profile?.resume,
-    // resume: null, // Holds the new resume file
-    profilePhoto: null, // Holds the new profile photo file
+    fullname: user?.fullname || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    bio: user?.profile?.bio || "",
+    skills: user?.profile?.skills?.join(", ") || "",
+    projects: user?.profile?.projects || "",
+    contact: user?.profile?.contact || "",
+    awards: user?.profile?.awards || "",
+    profilePhoto: null,
   });
-
-  const dispatch = useDispatch()
+  const [isDirty, setIsDirty] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value })
-  }
+    setInput({ ...input, [e.target.name]: e.target.value });
+    setIsDirty(true); // Mark as dirty when a field is changed
+  };
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files?.[0];
-    if (e.target.name === "file") {
-      setInput({ ...input, file }); // For resume
-    } if (e.target.name === "profilePhoto") {
-      setInput({ ...input, profilePhoto: file }); // For profile photo
+    if (e.target.name === "profilePhoto") {
+      setInput({ ...input, profilePhoto: file });
+      setIsDirty(true); // Mark as dirty when a file is selected
     }
-
-   }
+  };
 
   const submitHandler = async (e) => {
-    e.preventDefault(); 
-   
+    e.preventDefault();
     const formData = new FormData();
-    formData.append("fullname", input.fullname);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("bio", input.bio);
-    formData.append("skills", input.skills);
-    // if (input.resume) {
-    //   formData.append("resume", input.resume);
-    // }
-    if (input.profilePhoto) {
-      formData.append("profilePhoto", input.profilePhoto);
-    }
+    Object.keys(input).forEach((key) => {
+      formData.append(key, input[key]);
+    });
+
     try {
       setLoading(true);
-      const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
+      const requiredFields = ["fullname", "email", "phoneNumber"];
+      const missingFields = requiredFields.filter((field) => {
+        const keys = field.split(".");
+
+        let value = input;
+        keys.forEach((key) => {
+          value = value[key];
+        });
+
+        return !value;
       });
+
+      if (missingFields.length > 0) {
+        toast.error(
+          `Please fill in all required fields: ${missingFields.join(", ")}`
+        );
+        return;
+      }
+
+      const res = await axios.post(
+        `${USER_API_END_POINT}/profile/update`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         dispatch(setUser(res.data.user));
         toast.success(res.data.message);
-        setTimeout(() => window.location.reload(), 500); // Force UI to refresh
+        setTimeout(() => window.location.reload(), 500);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
-      
-      }
-      finally {
-        setLoading(false);
-      }
-      setInput({ ...input, file });
-      console.log(input);
-      setOpen(false);
-      console.log(input); 
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+    setOpen(false);
   };
 
+  const handleCloseDialog = () => {
+    if (isDirty) {
+      const confirmLeave = window.confirm(
+        "You have unsaved changes. Do you really want to leave without saving?"
+      );
+      if (confirmLeave) {
+        setOpen(false); // Close the dialog if confirmed
+      }
+    } else {
+      setOpen(false); // Close the dialog if no changes were made
+    }
+  };
+
+  const nextStep = () => {
+    if (currentStep < 3) setCurrentStep(currentStep + 1);
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
+  };
+
+  useEffect(() => {
+    if (open) {
+      setCurrentStep(1);
+    }
+    setInput({
+      fullname: user.fullname || "",
+      email: user.email || "",
+      phoneNumber: user.phoneNumber || "",
+      bio: user.profile?.bio || "",
+      skills: user.profile?.skills?.join(", ") || "",
+      projects: user.profile?.projects || "",
+      contact: user.profile?.contact || "",
+      awards: user.profile?.awards || "",
+      profilePhoto: null, // You can update this based on how profile photos are managed
+    });
+    setIsDirty(false);
+  }, [open, user]);
+
   return (
-    <div className="">
-      <Dialog open={open}>
-        <DialogContent
-          className="sm:max-w-[425px]"
-          onInteractOutside={() => setOpen(false)}
-        >
-          <DialogHeader>
-            <DialogTitle>Update Profile</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={submitHandler}>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={input.fullname}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={input.email}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="number" className="text-right">
-                  Number
-                </Label>
-                <Input
-                  id="number"
-                  name="number"
-                  value={input.phoneNumber}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="bio" className="text-right">
-                  Bio
-                </Label>
-                <Input
-                  id="bio"
-                  name="bio"
-                  value={input.bio}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="skills" className="text-right">
-                  Skills
-                </Label>
-                <Input
-                  id="skills"
-                  name="skills"
-                  value={input.skills}
-                  onChange={changeEventHandler}
-                  className="col-span-3"
-                />
-              </div>
-              {/* <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="file" className="text-right">
-                  Resume
-                </Label>
-                <Input
-                  id="file"
-                  name="file"
-                  type="file"
-                  accept="application/pdf"
-                  onChange={fileChangeHandler}
-                  className="col-span-3"
-                />
-              </div> */}
-              <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Profile Photo</Label>
+    <Dialog open={open} onOpenChange={handleCloseDialog}>
+      <DialogContent
+        className="sm:max-w-[600px]"
+        onInteractOutside={() => setOpen(false)}
+      >
+        <DialogHeader>
+          <DialogTitle>Update Profile</DialogTitle>
+        </DialogHeader>
+
+        <form>
+          {currentStep === 1 && (
+            <div className="grid gap-4">
+              <Label>Name</Label>
               <Input
-               id="profilePhoto"
+                name="fullname"
+                value={input.fullname}
+                onChange={changeEventHandler}
+              />
+              <Label>Email</Label>
+              <Input
+                name="email"
+                type="email"
+                value={input.email}
+                onChange={changeEventHandler}
+              />
+              <Label>Phone Number</Label>
+              <Input
+                name="phoneNumber"
+                value={input.phoneNumber}
+                onChange={changeEventHandler}
+              />
+            </div>
+          )}
+          {currentStep === 2 && (
+            <div className="grid gap-4">
+              <Label>About Me</Label>
+              <Input
+                name="bio"
+                value={input.bio}
+                onChange={changeEventHandler}
+              />
+              <Label>Skills</Label>
+              <Input
+                name="skills"
+                value={input.skills}
+                onChange={changeEventHandler}
+              />
+              <Label>Projects</Label>
+              <Input
+                name="projects"
+                value={input.projects}
+                onChange={changeEventHandler}
+              />
+            </div>
+          )}
+          {currentStep === 3 && (
+            <div className="grid gap-4">
+              <Label>Contact (Social Media, Portfolio)</Label>
+              <Input
+                name="contact"
+                value={input.contact}
+                onChange={changeEventHandler}
+              />
+              <Label>Awards & Achievements</Label>
+              <Input
+                name="awards"
+                value={input.awards}
+                onChange={changeEventHandler}
+              />
+              <Label>Profile Photo</Label>
+              <Input
                 name="profilePhoto"
                 type="file"
                 accept="image/*"
                 onChange={fileChangeHandler}
-                className="col-span-3"
               />
             </div>
-            
-            </div>
-            <DialogFooter>
-              {loading ? (
-                <Button className="w-full my-4">
-                  {" "}
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
-                </Button>
-              ) : (
-                <Button type="submit" className="w-full my-4">
-                  Update
+          )}
+          <DialogFooter>
+            <div className="flex justify-end w-full py-4 gap-2">
+              {currentStep > 1 && (
+                <Button type="button" onClick={prevStep} className="w-auto">
+                  Previous
                 </Button>
               )}
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+              {currentStep < 3 ? (
+                <Button type="button" onClick={nextStep} className="w-auto">
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={submitHandler} // Update should only happen on clicking this button
+                  className="w-auto"
+                >
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    "Update"
+                  )}
+                </Button>
+              )}
+              <Button
+                type="button"
+                onClick={handleCloseDialog}
+                className="w-auto"
+              >
+                Close
+              </Button>
+            </div>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

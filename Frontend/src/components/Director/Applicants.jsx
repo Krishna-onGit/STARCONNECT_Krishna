@@ -28,7 +28,7 @@ const Applicants = () => {
             <div>
 
             <Navbar />
-            <div className='max-w-7xl mx-auto bg-white rounded-md px-10 py-10 mt-10'>
+            <div className='max-w-7xl mx-auto bg-white rounded-2xl px-10 py-10 mt-10'>
                 <h1 className='font-bold text-xl my-5'>Applicants {applicants?.applications?.length}</h1>
                 <ApplicantsTable />
             </div>

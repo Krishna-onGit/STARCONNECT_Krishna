@@ -11,10 +11,10 @@ const tips = [
 
 const ScrollingTips = () => {
   return (
-    <div className="overflow-hidden whitespace-nowrap bg-[#6A38C2] h-10 py-1.5 text-white my-10">
+    <div className="overflow-hidden whitespace-nowrap  bg-transparent h-10 py-1.5 text-white my-10 shadow-white font-medium">
       <div className="inline-block animate-scroll">
         {tips.map((tip, index) => (
-          <span key={index} className="mx-10 text-lg">
+          <span key={index} className="mx-10 text-2xl">
             {tip}
           </span>
         ))}
@@ -24,3 +24,4 @@ const ScrollingTips = () => {
 };
 
 export default ScrollingTips;
+//bg-[#6b38c27e]

@@ -1,0 +1,108 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Navbar from "@/components/Shared/Navbar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@radix-ui/react-label";
+import { Mail, Contact, Projector, Loader2 } from "lucide-react";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/util/constant";
+import { toast } from "sonner";
+
+const CDPersonalProfile = () => {
+  const { id } = useParams();
+  const [director, setDirector] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (id) {
+      axios.get(`${USER_API_END_POINT}/profile/${id}`)
+        .then((res) => {
+          setDirector(res.data.user);
+          setLoading(false);  // ✅ Stop loading when data is received
+        })
+        .catch((err) => {
+          console.error("Error fetching director profile", err);
+          setError("Profile not found or an error occurred.");
+          setLoading(false);  // ✅ Stop loading if error occurs
+        });
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-500 font-semibold mt-10">
+        {error}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-main-bg min-h-screen flex flex-col">
+      <div className="bg-overlay-bg flex-grow">
+        <Navbar />
+        <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0 border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl bg-white/45">
+          {/* Profile Header */}
+          <div className="flex justify-between">
+            <div className="flex items-center gap-3 ml-4 font-semibold">
+              <Avatar className="h-16 w-16">
+                <AvatarImage src={director.profile?.profilePhoto || ""} />
+              </Avatar>
+              <div>
+                <h1 className="font-extrabold text-gray-900 text-xl">
+                  {director.fullname}
+                </h1>
+                <p>{director.profile.bio || "No bio available"}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Info */}
+          <div className="ml-6 my-2">
+            <div className="flex items-center gap-5 my-2 font-bold">
+              <Label className="text-black">
+                <Mail />
+              </Label>
+              <span>{director.email}</span>
+            </div>
+            <div className="flex items-center gap-5 font-bold">
+              <Label className="text-black">
+                <Contact />
+              </Label>
+              <span className="text-gray-700">
+                {director.phoneNumber || "No number provided"}
+              </span>
+            </div>
+
+            {/* Director's Active Projects */}
+            <div className="my-2">
+              <div className="flex items-center gap-5 my-2 font-bold">
+                <Label className="text-black">
+                  <Projector />
+                </Label>
+                {director.profile?.activeProjects?.length > 0 ? (
+                  director.profile.activeProjects.map((project, index) => (
+                    <Badge key={index}>{project}</Badge>
+                  ))
+                ) : (
+                  <span className="text-gray-700">No active projects listed</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CDPersonalProfile;

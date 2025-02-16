@@ -179,19 +179,56 @@ export const logout = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-      const actorId = req.params.id;
-      const actorProfile = await User.findById(actorId).populate("profile");
+    const userId = req.params.id;
+    
+    // Find user by ID and populate the profile based on their role
+    const userProfile = await User.findById(userId).populate("profile");
 
-      if (!actorProfile) {
-          return res.status(404).json({ success: false, message: "Actor not found" });
-      }
+    if (!userProfile) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
 
-      res.status(200).json({ success: true, user: actorProfile });
+    // Check if the user is an actor or director
+    if (userProfile.role === "Actor") {
+      // If it's an actor, return actor-specific data
+      return res.status(200).json({ success: true, user: userProfile });
+    } else if (userProfile.role === "Director") {
+      // If it's a director, return director-specific data
+      return res.status(200).json({ success: true, user: userProfile });
+    } else {
+      // If role is neither actor nor director
+      return res.status(400).json({ success: false, message: "Invalid user role" });
+    }
   } catch (error) {
-      res.status(500).json({ success: false, message: "Server Error" });
+    console.error("Error fetching user profile", error);
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };
 
+
+export const getAllActors = async (req, res) => {
+  try {
+    const actors = await User.find({ role: 'Actor' }); // Fetch all actors (You can modify this to filter by role or profile type)
+    if (!actors.length) {
+      return res.status(404).json({ success: false, message: "No actors found" });
+    }
+    res.status(200).json(actors); // Return all actors in the response
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+export const getAllDirector = async (req, res) => {
+  try {
+    const actors = await User.find({ role: 'Director' }); // Fetch all actors (You can modify this to filter by role or profile type)
+    if (!actors.length) {
+      return res.status(404).json({ success: false, message: "No Director found" });
+    }
+    res.status(200).json(actors); // Return all actors in the response
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
 
 export const updateProfile = async (req, res) => {
   try {

@@ -17,18 +17,22 @@ const Companies = () => {
   useEffect(() => {
     dispatch(setSearchCompanyByText(input));
   }, [input]);
+
   return (
-    <div className="bg-main-bg min-h-screen ">
+    <div className="bg-main-bg min-h-screen">
       <div className="bg-overlay-bg min-h-screen">
         <Navbar />
-        <div className="max-w-6xl mx-auto my-10">
+        <div className="max-w-6xl mx-auto my-10 p-8 bg-white rounded-2xl shadow-2xl">
           <div className="flex items-center justify-between my-5">
             <Input
-              className="w-fit"
+              className="w-1/3 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-main-accent"
               placeholder="Filter by name"
               onChange={(e) => setInput(e.target.value)}
             />
-            <Button onClick={() => navigate("/admin/companies/create")}>
+            <Button
+              
+              onClick={() => navigate("/admin/companies/create")}
+            >
               New Company
             </Button>
           </div>

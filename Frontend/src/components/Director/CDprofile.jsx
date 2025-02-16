@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Shared/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Contact, Mail, Pen } from "lucide-react";
+import { Award, Contact, Mail, Pen, ProjectorIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@radix-ui/react-label";
 import { useSelector } from "react-redux";
@@ -20,11 +20,9 @@ import CDUpdateProfileDailog from "./CDupdateProfileDailog";
 const isProfilePhoto = true;
 
 const CDprofile = () => {
-  
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   const [refresh, setRefresh] = useState(false);
-
 
   // Ensure user is defined before accessing properties
   if (!user || !user.profile) {
@@ -49,7 +47,7 @@ const CDprofile = () => {
           <div className="flex justify-between">
             <div className="flex items-center gap-3 ml-4 font-semibold">
               <Avatar className="h-16 w-16">
-                <AvatarImage
+                <AvatarImage className="object-cover"
                   key={refresh}
                   src={user.profile.profilePhoto || ""}
                 />
@@ -102,25 +100,34 @@ const CDprofile = () => {
               )}
             </div>
           </div>
-
-          {/* <div className="flex w-full max-w-sm items-center gap-5 ml-6">
-            <Label className="text-md font-extrabold text-white">
-              <Projector />
+          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
+            <Label className="text-white">
+              <Contact />
             </Label>
-            {user?.profile?.resume ? (
-              <a
-                target="_blank"
-                href={user.profile.resume}
-                className="font-bold w-full hover:underline cursor-pointer"
-              >
-                {user.profile.resumeOriginalName || "View Resume"}
-              </a>
-            ) : (
-              <span className="text-red-500">Resume not available</span>
-            )}
-          </div> */}
+            <div>
+              {user.profile.contact || "No contact information provided"}
+            </div>
+          </div>
 
-          {/* Profile Photo Link */}
+          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
+            <Label className="text-white">
+              <Award />
+            </Label>
+            <div>{user.profile.awards || "No awards listed"}</div>
+          </div>
+
+          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
+            <Label className="text-white">
+              <ProjectorIcon />
+            </Label>
+            <div>
+              {user.profile.projects && user.profile.projects.length > 0 ? (
+                <span>{user.profile.projects}</span>
+              ) : (
+                <span>No projects listed</span>
+              )}
+            </div>
+          </div>
           <div className="flex w-full max-w-sm items-center gap-5 ml-6">
             <Label className="text-md font-extrabold text-white">
               <Projector />
@@ -137,12 +144,7 @@ const CDprofile = () => {
               <span>NA</span>
             )}
           </div>
-          
-    
         </div>
-
-        
-       
 
         <CDUpdateProfileDailog open={open} setOpen={setOpen} />
       </div>

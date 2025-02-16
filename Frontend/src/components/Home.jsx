@@ -7,17 +7,22 @@ import { motion, useScroll } from "framer-motion";
 
 const HeroSection = lazy(() => import("./Actor/HeroSection"));
 const LatestJobs = lazy(() => import("./Actor/LatestJobs"));
-const InfiniteMovingCardsDemo = lazy(() => import("./Design-UI/InfiniteMovingCardsDemo"));
+const InfiniteMovingCardsDemo = lazy(() =>
+  import("./Design-UI/InfiniteMovingCardsDemo")
+);
 const PersonalityQuiz = lazy(() => import("./Design-UI/PersonalityQuiz"));
 const ScrollingTips = lazy(() => import("./Design-UI/ScrollingTips"));
-const DailyActingChallenge = lazy(() => import("./Design-UI/DailyActingChallenge"));
+const DailyActingChallenge = lazy(() =>
+  import("./Design-UI/DailyActingChallenge")
+);
 
 const Home = () => {
   useGetAllJobs();
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
-  const { scrollYProgress } = useScroll(); 
-  
+  const { scrollYProgress } = useScroll();
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
   const backgroundImages = [
     "/Images/image1.jpg",
     "/Images/img17.jpg",
@@ -26,6 +31,7 @@ const Home = () => {
     "/Images/imgg6.jpg",
     "/Images/crew.jpg",
     "/Images/img16.jpg",
+   
   ];
 
   const [bgIndex, setBgIndex] = useState(0);
@@ -33,25 +39,44 @@ const Home = () => {
   useEffect(() => {
     return scrollYProgress.onChange((progress) => {
       const index = Math.min(
-        Math.floor(progress * backgroundImages.length), 
+        Math.floor(progress * backgroundImages.length),
         backgroundImages.length - 1
       );
       setBgIndex(index);
     });
   }, [scrollYProgress]);
+  useEffect(() => {
+    const imagePromises = backgroundImages.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+        })
+    );
+  
+    Promise.all(imagePromises).then(() => {
+      setImagesLoaded(true);  // All images are loaded
+    });
+  }, [backgroundImages]);
+  if (!imagesLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       {/* Hero Section without background change */}
       <div className=" z-10">
-        <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <Suspense
+          fallback={<div className="text-center text-white">Loading...</div>}
+        >
           <HeroSection />
         </Suspense>
       </div>
 
       {/* Background transition with opacity effect */}
       <motion.div
-        className="relative min-h-screen bg-cover bg-fixed"
+        className="relative min-h-screen bg-cover bg-fixed "
         style={{
           backgroundImage: `url(${backgroundImages[bgIndex]})`,
           transition: "background-image 0.5s ease-in-out",
@@ -62,7 +87,9 @@ const Home = () => {
 
         {/* Content above background */}
         <div className="relative z-10">
-          <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+          <Suspense
+            fallback={<div className="text-center text-white">Loading...</div>}
+          >
             <InfiniteMovingCardsDemo />
             <PersonalityQuiz />
             <LatestJobs />

@@ -1,123 +1,116 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Shared/Navbar";
-
-const newsArray = [
-  {
-    id: 1,
-    title: "Upcoming Blockbuster Movies of 2025",
-    description:
-      "Discover the most anticipated films of the year, featuring thrilling stories, groundbreaking visuals, and unforgettable performances.",
-    image: "https://c4.wallpaperflare.com/wallpaper/666/657/94/neymar-beautiful-pictures-wallpaper-preview.jpg",
-    date: "January 25, 2025",
-    category: "Movies",
-  },
-  {
-    id: 2,
-    title: "Top Acting Techniques to Master in 2025",
-    description:
-      "Explore the best acting methods to refine your skills and captivate audiences in the competitive entertainment industry.",
-    image: "https://i2-prod.mirror.co.uk/incoming/article27448644.ece/ALTERNATES/n615/0_Manchester-United-v-Chelsea-UEFA-Champions-League-Final-Moscow-21052008.jpg",
-    date: "January 20, 2025",
-    category: "Acting",
-  },
-  {
-    id: 3,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://wallpapercat.com/w/full/d/6/d/52964-1920x1080-desktop-full-hd-lionel-messi-background-image.jpg",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 4,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://c4.wallpaperflare.com/wallpaper/1012/835/620/andres-iniesta-fc-barcelona-wallpaper-thumb.jpg",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 5,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkak15DzPzTwVIoGgzUAvVqr__QFqpVHru_g&s",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 6,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://c4.wallpaperflare.com/wallpaper/215/426/429/footballers-soccer-zinedine-zidane-wallpaper-thumb.jpg",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 7,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://wallpapers.com/images/featured/paolo-maldini-iqin5cg83r7uncx0.jpg",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 8,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://media.pff.com/2022/12/USATSI_19647017_168392721_lowres-scaled.jpg?w=1200&h=675",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-  {
-    id: 9,
-    title: "The Future of Film Editing: Trends to Watch",
-    description:
-      "Learn about the latest advancements in editing technology and how they are shaping the future of filmmaking.",
-    image: "https://c4.wallpaperflare.com/wallpaper/612/562/336/carles-puyol-rain-wallpaper-preview.jpg",
-    date: "January 18, 2025",
-    category: "Editing",
-  },
-];
+import axios from "axios";
+import { motion, useScroll } from "framer-motion";
 
 const News = () => {
-  return (
-    <div className="bg-main-bg min-h-screen text-white">
-      <Navbar />
-      <div className="max-w-7xl mx-auto p-5">
-        <h1 className="text-3xl font-bold mb-5">Top News</h1>
+  const [newsArray, setNewsArray] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { scrollYProgress } = useScroll(); 
+   const backgroundImages = [
+      "/Images/newsbg5.jfif",
+      "/Images/newsbg1.jfif",
+      "/Images/newsbg2.jfif",
+      "/Images/newsbg3.jfif",
+      "/Images/newsbg4.jfif",
+     
+    ];
+  
+    const [bgIndex, setBgIndex] = useState(0);
+  
+    useEffect(() => {
+      return scrollYProgress.onChange((progress) => {
+        const index = Math.min(
+          Math.floor(progress * backgroundImages.length), 
+          backgroundImages.length - 1
+        );
+        setBgIndex(index);
+      });
+    }, [scrollYProgress]);
 
+  // Fetching the news data
+  useEffect(() => {
+    
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get(
+          "https://newsapi.org/v2/top-headlines",
+          {
+            params: {
+              apiKey: "1ed90e81936946609454418f6fbed00e", // Replace with your API key
+              category: "entertainment", // News related to entertainment
+              language: "en", // English news
+              country: "us", // Filter for US-based news (optional)
+            },
+          }
+        );
+        setNewsArray(response.data.articles);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch news");
+        setLoading(false);
+      }
+    };fetchNews();
+    return scrollYProgress.onChange((progress) => {
+      const index = Math.min(
+        Math.floor(progress * backgroundImages.length), 
+        backgroundImages.length - 1
+      );
+      setBgIndex(index);
+    });
+  }, [scrollYProgress]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return (
+    <motion.div
+    className="relative min-h-screen bg-cover bg-fixed "
+    style={{ backgroundImage:`url(${backgroundImages[bgIndex]})`,
+    transition: "background-image 0.5s ease-in-out", }} // Ensure the image path is correct
+  >
+    <div className="absolute inset-0 bg-black opacity-50"></div>
+    <div className="text-white relative z-10">
+      <Navbar />
+      <div className="max-w-7xl mx-auto p-10">
+        <h1 className="text-3xl font-bold mb-3">Top News</h1>
+  
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {newsArray.map((news) => (
+          {newsArray.map((news, index) => (
             <div
-              key={news.id}
-              className="bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition-all duration-300"
+              key={index}
+              className="bg-[#ffffff60] rounded-3xl shadow-lg overflow-hidden hover:scale-105 transform transition-all duration-300 object-cover"
             >
-              <img
-                src={news.image}
-                alt={news.title}
-                className="w-full h-40 object-cover"
-              />
-              <div className="p-4">
-                <h2 className="text-xl font-semibold mb-2">{news.title}</h2>
-                <p className="text-sm text-gray-400 mb-4">{news.description}</p>
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span>{news.date}</span>
-                  <span className="bg-blue-600 text-white px-2 py-1 rounded">
-                    {news.category}
-                  </span>
+              <a href={news.url} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={news.urlToImage || "https://via.placeholder.com/150"} // Placeholder if no image
+                  alt={news.title}
+                  className="w-full h-56 object-cover p-3 rounded-3xl" // Consistent height for images
+                />
+                <div className="p-4 h-full">
+                  <h2 className="text-l font-medium mb-2 line-clamp-2">{news.title}</h2> {/* Added line-clamp to limit title length */}
+                  <p className="text-sm text-black mb-4 line-clamp-3">{news.description}</p> {/* Added line-clamp to limit description length */}
+                  <div className="flex justify-between items-center text-sm text-gray-900">
+                    <span>{new Date(news.publishedAt).toLocaleDateString()}</span>
+                    <span className="bg-[#6A38C2] hover:bg-[#30fff8] transition duration-200 text-white px-2 py-1 rounded-3xl">
+                      {news.source.name}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           ))}
         </div>
       </div>
     </div>
+  </motion.div>
+  
   );
 };
 

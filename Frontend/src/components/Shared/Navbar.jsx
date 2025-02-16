@@ -39,16 +39,14 @@ const Navbar = () => {
   return (
     <div className="pt-5 w-full z-20 bg-transparent ">
       <div className="flex  items-center justify-between mx-auto max-w-7xl h-16 px-4">
-        <div className="flex items-center gap-2 ">
-        <Link to={user?.role === "Director" ? "/admin" : "/"}>
+        <div className="flex items-center gap-2 w-fit">
+        <Link to={user?.role === "Director" ? "/admin" : "/"} className="inline-block">
         <img
-            src={"/Images/STARCONNECT.svg"}
+            src="/Images/STARCONNECT.svg"
             alt="StarConnect Logo"
-            className="size-4/12"
+            className=" w-[180px] max-w-full"
           />
-            {/* <h1 className="font-bold text-2xl text-white">
-              Star<span className="text-[#895bff]">Connect</span>
-            </h1> */}
+            
           </Link>
         </div>
         <div className="flex items-center  gap-10">
@@ -59,7 +57,7 @@ const Navbar = () => {
                    <li><Link to="/admin">HOME</Link></li>
                   <li><Link to="/admin/Companies">COMPANIES</Link></li>
                   <li><Link to="/admin/jobs">JOBS</Link></li>
-                  <li><Link to="/admin/FindTalent">Find Talent</Link> </li>
+                  <li><Link to="/admin/FindTalent">TALENTS</Link> </li>
                  
                 </>
               ) : (
@@ -67,6 +65,7 @@ const Navbar = () => {
                   <li><Link to="/">HOME</Link></li>
                   <li><Link to="/JOBS">JOBS</Link></li>
                   <li><Link to="/NEWS">NEWS</Link></li>
+                  <li><Link to="/FindDirector">DIRECTORS</Link></li>
                 </>
               )
             }
@@ -86,8 +85,8 @@ const Navbar = () => {
           ) : (
             <Popover>
               <PopoverTrigger asChild>
-                <Avatar className="cursor-pointer">
-                  <AvatarImage src={user?.profile?.profilePhoto} />
+                <Avatar className="cursor-pointer object-cover">
+                  <AvatarImage className="object-cover" src={user?.profile?.profilePhoto} />
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent className="w-80">
