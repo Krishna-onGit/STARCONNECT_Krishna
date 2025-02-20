@@ -11,9 +11,14 @@ import multer from "multer";
 const storage = multer.memoryStorage({}); // Store files temporarily before Cloudinary upload
 
 const fileFilter = (req, file, cb) => {
+<<<<<<< HEAD
   const allowedMimeTypes = ["image/", "video/"];
   if (!allowedMimeTypes.some(type => file.mimetype.startsWith(type))) {
     return cb(new Error("Only image or video files are allowed!"), false);
+=======
+  if (!file.mimetype.startsWith("image/")) {
+    return cb(new Error("Only image files are allowed!"), false);
+>>>>>>> c5951ef00c6fa84314ba065af448a8fb0e4533ec
   }
   cb(null, true);
 };
