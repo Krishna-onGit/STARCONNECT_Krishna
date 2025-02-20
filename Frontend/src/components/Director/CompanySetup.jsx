@@ -46,7 +46,7 @@ const CompanySetup = () => {
         formData.append("description", input.description);
         formData.append("website", input.website);
         formData.append("location", input.location);
-        if (input.file) { //this is for checking for file exist of not 
+        if (input.file) { //this is for checking for file exist of not  //changed 
             formData.append("logo", input.file); //if file exist the it will append 
         }
         try{

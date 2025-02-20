@@ -1,7 +1,7 @@
 import { Company } from "../Models/company.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
-import { Job }  from "../Models/job.model.js";
+import { Job } from "../Models/job.model.js";
 import mongoose from "mongoose";
 
 export const registerCompany = async (req, res) => {
@@ -76,15 +76,16 @@ export const updateCompany = async (req, res) => {
     const { name, description, website, location } = req.body;
     // let logo = null;
 
-    const files = req.files?.logo?.[0];
-    let logo ;{//change
-        const fileUri = getDataUri(files);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        logo = cloudResponse.secure_url;
+    const file = req.files?.logo?.[0];
+    let logo;//change 
+    if (file) {//change
+      const fileUri = getDataUri(file);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+      logo = cloudResponse.secure_url;
     }
 
 
-    const updateData = { name, description, website, location , logo };
+    const updateData = { name, description, website, location, logo };
     if (logo) updateData.logo = logo; // Only update if a new logo is uploaded
 
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
@@ -106,29 +107,29 @@ export const updateCompany = async (req, res) => {
   }
 };
 export const deleteCompany = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid company ID", success: false });
-        }
-
-        // Delete all jobs related to this company using Job model
-        await Job.deleteMany({ company: id });
-
-        // Delete the company
-        const deletedCompany = await Company.findByIdAndDelete(id);
-
-        if (!deletedCompany) {
-            return res.status(404).json({ message: "Company not found" ,success: false});
-        }
-
-        res.status(200).json({ message: "Company and related jobs deleted successfully" ,success:true});
-
-    } catch (error) {
-        console.error("Error deleting company:", error);
-        res.status(500).json({ message: "Internal Server Error" ,success: false});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid company ID", success: false });
     }
+
+    // Delete all jobs related to this company using Job model
+    await Job.deleteMany({ company: id });
+
+    // Delete the company
+    const deletedCompany = await Company.findByIdAndDelete(id);
+
+    if (!deletedCompany) {
+      return res.status(404).json({ message: "Company not found", success: false });
+    }
+
+    res.status(200).json({ message: "Company and related jobs deleted successfully", success: true });
+
+  } catch (error) {
+    console.error("Error deleting company:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
 };
 
 // import { Company } from "../Models/company.model.js";
@@ -212,15 +213,15 @@ export const deleteCompany = async (req, res) => {
 //         // const file = req.file;
 //         const file = req.files?.logo?.[0];
 //         // idhar cloudinary ayega
-//         let logo;//change 
+//         let logo;//change
 //         if (file) {//change
 //             const fileUri = getDataUri(file);
 //             const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 //             logo = cloudResponse.secure_url;
 //         }
 
-//         const updateData = { name, description, website, location, logo };//logo add karan baki hai 
-//         if (logo) updateData.logo = logo;//change 
+//         const updateData = { name, description, website, location, logo };//logo add karan baki hai
+//         if (logo) updateData.logo = logo;//change
 
 //         const company = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
