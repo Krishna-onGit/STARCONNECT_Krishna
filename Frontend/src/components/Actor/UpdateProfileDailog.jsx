@@ -51,6 +51,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
     //media and Portfolio
     instagramId: user?.instagramId,
     facebookId: user?.facebookId,
+    webistelink: user?.webistelink,
     //PreferredRoles
     preferredRoles: user?.preferredRoles,
     bestActingIn: user?.bestActingIn,
@@ -62,8 +63,33 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
   const [currentStep, setCurrentStep] = useState(1); // Track the current step in the form
   const dispatch = useDispatch();
 
+  // const changeEventHandler = (e) => {
+  //   setInput({ ...input, [e.target.name]: e.target.value });
+  //   setIsDirty(true); // Mark as dirty when a field is changed
+  // };
   const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let newInput = { ...input, [name]: value };
+
+    // If dateOfBirth is changed, calculate age
+    if (name === "dateOfBirth") {
+      const birthDate = new Date(value);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      // Adjust age if birthday hasn’t occurred yet this year
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+
+      newInput.age = age >= 0 ? age.toString() : ""; // Ensure age is non-negative
+    }
+
+    setInput(newInput);
     setIsDirty(true); // Mark as dirty when a field is changed
   };
 
@@ -185,6 +211,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
         videos: user?.profile?.videos || "",
         instagramId: user?.profile?.instagramId || "",
         facebookId: user?.profile?.facebookId || "",
+        webistelink: user?.profile?.webistelink || "",
         preferredRoles: user?.profile?.preferredRoles || "",
         bestActingIn: user?.profile?.bestActingIn || "",
         bio: user?.profile?.bio || "",
@@ -262,6 +289,19 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     className="col-span-3"
                   />
                 </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="age" className="text-right">
+                    Age
+                  </Label>
+                  <Input
+                    id="age"
+                    name="age"
+                    type="text"
+                    value={input.age}
+                    onChange={changeEventHandler}
+                    className="col-span-3"
+                  />
+                </div>
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label className="text-right">Gender</Label>
                   <RadioGroup
@@ -291,19 +331,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     </div>
                   </RadioGroup>
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4 py-2">
-                  <Label htmlFor="languagesSpoken" className="text-right">
-                    Mother TOUNG
-                  </Label>
-                  <Input
-                    id="languagesSpoken"
-                    name="languagesSpoken"
-                    type="text"
-                    value={input.languagesSpoken}
-                    onChange={changeEventHandler}
-                    className="col-span-3"
-                  />
-                </div>
+
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label htmlFor="location" className="text-right">
                     Location
@@ -379,6 +407,19 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
+                  <Label htmlFor="languagesSpoken" className="text-right">
+                    Mother Toung
+                  </Label>
+                  <Input
+                    id="languagesSpoken"
+                    name="languagesSpoken"
+                    type="text"
+                    value={input.languagesSpoken}
+                    onChange={changeEventHandler}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label className="text-right">Tattoos or Scars</Label>
                   <RadioGroup
                     className="py-4 flex"
@@ -400,19 +441,6 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                       </Label>
                     </div>
                   </RadioGroup>
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="age" className="text-right">
-                    Age
-                  </Label>
-                  <Input
-                    id="age"
-                    name="age"
-                    type="text"
-                    value={input.age}
-                    onChange={changeEventHandler}
-                    className="col-span-3"
-                  />
                 </div>
               </div>
             )}
@@ -480,7 +508,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                 {/* Media & Portfolio Fields */}
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label htmlFor="instagramId" className="text-right">
-                    instagramId
+                    InstagramId
                   </Label>
                   <Input
                     id="instagramId"
@@ -488,12 +516,15 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     value={input.instagramId}
                     onChange={changeEventHandler}
                     className="col-span-3"
+                    placeholder="Enter Instagram Link"
+                    type="url"
+                    required
                   />
                 </div>
 
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label htmlFor="facebookId" className="text-right">
-                    facebookId
+                    FacebookId
                   </Label>
                   <Input
                     id="facebookId"
@@ -501,6 +532,24 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     value={input.facebookId}
                     onChange={changeEventHandler}
                     className="col-span-3"
+                     placeholder="Enter Facebook Link"
+                      type="url"
+                  />
+                </div>
+
+                <div className="grid grid-cols-4 items-center gap-4 py-2">
+                  <Label htmlFor="webistelink" className="text-right">
+                    Webiste Link
+                  </Label>
+                  <Input
+                    id="webistelink"
+                    name="webistelink"
+                    value={input.webistelink}
+                    onChange={changeEventHandler}
+                    className="col-span-3"
+                    placeholder="Enter Website Link"
+                    type="url"
+                    
                   />
                 </div>
               </div>
@@ -543,7 +592,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                 {/* About Me Fields */}
                 <div className="grid grid-cols-4 items-center gap-4 py-2">
                   <Label htmlFor="bio" className="text-right">
-                    Bio
+                    About Yourself
                   </Label>
                   <Input
                     id="bio"
@@ -585,11 +634,10 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                 </Button>
               </div>
             </DialogFooter>
-            
           </form>
         </DialogContent>
       </Dialog>
     </div>
   );
-}
+};
 export default UpdateProfileDailog;

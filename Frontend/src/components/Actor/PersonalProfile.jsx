@@ -4,7 +4,7 @@ import Navbar from "@/components/Shared/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@radix-ui/react-label";
-import { Mail, Contact, Popcorn, Projector, Loader2 } from "lucide-react";
+import { Mail, Contact, Popcorn, Projector, Loader2, MapPin, Calendar, User } from "lucide-react";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/util/constant";
 import { toast } from "sonner";
@@ -56,13 +56,20 @@ const PersonalProfile = () => {
           <div className="flex justify-between">
             <div className="flex items-center gap-3 ml-4 font-semibold">
               <Avatar className="h-16 w-16">
-                <AvatarImage src={actor.profile?.profilePhoto || ""} />
+                <AvatarImage className="object-cover" src={actor.profile?.profilePhoto || ""} />
               </Avatar>
               <div>
                 <h1 className="font-extrabold text-gray-900 text-xl">
                   {actor.fullname}
                 </h1>
-                <p>{actor.profile.bio || "No bio available"}</p>
+                <div>
+
+                <Label className="text-black"></Label>
+                {actor.profile.bio  ||(
+                <span className="font-semibold text-red-950">No bio available </span>
+              )}
+                </div>
+                {/* <p className="text-black">{actor.profile.bio || "No bio available"}</p> */}
               </div>
             </div>
           </div>
@@ -79,9 +86,9 @@ const PersonalProfile = () => {
               <Label className="text-black">
                 <Contact />
               </Label>
-              <span className="text-gray-700">
-                {actor.phoneNumber || "No number provided"}
-              </span>
+              {actor.phoneNumber ||(
+                <span className="font-semibold text-red-950">No number provided </span>
+              )}
             </div>
 
             
@@ -90,13 +97,41 @@ const PersonalProfile = () => {
               <Label className="text-black">
               <Popcorn />
             </Label>
-            {actor.profile?.skills?.map((skill, index) => (
+            {actor.profile.skills?.length > 0 ? (
+            actor.profile?.skills?.map((skill, index) => (
               <Badge className="text-base" key={index}>
                 {skill}
               </Badge>
-            ))}
+              
+            ))):(<span className="text-red-950 font-semibold"> No skills </span>)}
+            
               </div>
             </div>
+              {/* Location */}
+          <div className="my-2 flex items-center gap-5 ">
+            <MapPin />
+            {actor.profile.location ||(
+
+              <span  className="text-red-950 font-semibold"> Location not set</span>
+            )}
+          </div>
+           {/* Age */}
+           <div className="flex w-full max-w-sm items-center gap-5  my-3">
+            <Calendar />
+            {actor.profile.age ? (
+              actor.profile.age
+            ) : (
+              <span className="text-red-950 font-semibold" >Age not Defined</span>
+            )}
+          </div>
+
+          {/* Gender */}
+          <div className="flex w-full max-w-sm items-center gap-5  my-3">
+            <User />
+            {actor.profile.gender || (
+              <span className="text-red-950 font-semibold">Gender not defined</span>
+            )}
+          </div>
             
           </div>
         </div>

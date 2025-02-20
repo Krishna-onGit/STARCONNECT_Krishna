@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { motion, useScroll } from "framer-motion";
+import HeroScrollDemo from "./Design-UI/HeroScrollDemo";
 
 const HeroSection = lazy(() => import("./Actor/HeroSection"));
 const LatestJobs = lazy(() => import("./Actor/LatestJobs"));
@@ -95,6 +96,7 @@ const Home = () => {
             <LatestJobs />
             <ScrollingTips />
             {/* <DailyActingChallenge /> */}
+            
           </Suspense>
           <Footer />
         </div>

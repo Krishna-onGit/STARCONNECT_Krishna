@@ -1,44 +1,3 @@
-// import mongoose from "mongoose";
-// const userSchema = new mongoose.Schema(
-//   {
-//     fullname: {
-//       type: String,
-//       required: true,
-//     },
-//     email: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//     },
-//     phoneNumber: {
-//       type: Number,
-//       required: true,
-//     },
-//     password: {
-//       type: String,
-//       required: true,
-//     },
-//     role: {
-//       type: String,
-//       enum: ["Actor", "Director"],
-//       required: true,
-//     },
-//     profile: {
-//       bio: { type: String },
-//       skills: [{ type: String }],
-//       // resume: { type: String }, // URL to resume file
-//       // resumeOriginalName: { type: String },
-//       company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-//       profilePhoto: { type: String },
-      
-//     },
-  
-//   },
-//   { timestamps: true }
-// );
-// export const User = mongoose.model("User", userSchema);
-
-
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -68,8 +27,7 @@ const userSchema = new mongoose.Schema(
     profile: {
       bio: { type: String },
       skills: [{ type: String }],
-      //resume: { type: String }, // URL to resume file
-      //resumeOriginalName: { type: String },
+
       company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
       profilePhoto: { type: String },
       
@@ -94,10 +52,19 @@ const userSchema = new mongoose.Schema(
       // Media & Portfolio
       instagramId: { type: String },
       facebookId: { type: String },
+      photos: [{ type: String }],
+      webistelink: {type:String},
       
       // Preferences
       preferredRoles: [{ type: String }], // e.g., Lead, Supporting, Background
       bestActingIn: { type: String },
+
+      // Only Director
+      projects:[{type:String}],
+      awards:[{type:String}],
+
+       // Add the quizCompleted field
+      quizCompleted: { type: Boolean, default: false },
     },
   },
   { timestamps: true }

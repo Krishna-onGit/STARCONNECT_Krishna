@@ -45,10 +45,7 @@ const SignUp = () => {
       formData.append("profilePhoto", input.file); 
     }
     
-    // Append resume if provided
-    if (input.resumeFile) {
-      formData.append("resume", input.resumeFile);
-    }
+   
     
     try {
       dispatch(setLoading(true));

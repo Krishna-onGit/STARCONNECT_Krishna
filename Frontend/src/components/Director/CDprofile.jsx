@@ -100,14 +100,7 @@ const CDprofile = () => {
               )}
             </div>
           </div>
-          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
-            <Label className="text-white">
-              <Contact />
-            </Label>
-            <div>
-              {user.profile.contact || "No contact information provided"}
-            </div>
-          </div>
+          
 
           <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
             <Label className="text-white">

@@ -15,6 +15,10 @@ const applicationSchema = new mongoose.Schema({
         type:String,
         enum:['pending', 'accepted', 'rejected'],
         default:'pending'
-    }
+    },
+    auditionVideo: {//added
+        type: String, // Store Cloudinary URL
+        default: null
+    },
 },{timestamps:true});
 export const Application  = mongoose.model("Application", applicationSchema);

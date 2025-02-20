@@ -659,8 +659,8 @@ const PostJob = () => {
                 </RadioGroup>
               </div>
               <div>
-                <Label>Special Submission Auditions</Label>
-                <RadioGroup
+               <Label>Special Submission Auditions</Label>
+              <RadioGroup
                   value={input.specialSubmissionAuditions}
                   onValueChange={(value) =>
                     setInput({ ...input, specialSubmissionAuditions: value })
@@ -688,9 +688,17 @@ const PostJob = () => {
                     <Label>Receive Audition Video</Label>
                     <Input
                       type="checkbox"
-                      name="receiveAuditionVideo"
-                      onChange={changeEventHandler}
-                      value="true"
+                      name="auditionDetails.videoRequirement"
+                      checked={input?.auditionDetails?.videoRequirement || false}
+                      onChange={(e) =>
+                        setInput({
+                          ...input,
+                          auditionDetails: {
+                            ...input.auditionDetails,
+                            videoRequirement: e.target.checked, // Set to true if checked, false if unchecked
+                          },
+                        })
+                      }
                     />
                   </div>
                 </>
@@ -718,6 +726,70 @@ const PostJob = () => {
                   </div>
                 </>
               )}
+              {/* <div>
+                <Label>Special Submission Auditions</Label>
+                <RadioGroup
+                  value={input.specialSubmissionAuditions}
+                  onValueChange={(value) =>
+                    setInput({ ...input, specialSubmissionAuditions: value })
+                  }
+                  className="flex py-5"
+                >
+                  <RadioGroupItem value="Online" id="online" />
+                  <Label htmlFor="online">Online</Label>
+                  <RadioGroupItem value="Offline" id="offline" />
+                  <Label htmlFor="offline">Offline</Label>
+                </RadioGroup>
+              </div>
+
+              {input.specialSubmissionAuditions === "Online" && (
+                <>
+                  <div>
+                    <Label>Upload Audition Script</Label>
+                    <Input
+                      type="file"
+                      accept=".pdf,.docx"
+                      name="auditionScript"
+                      onChange={changeEventHandler}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label>Receive Audition Video</Label>
+                    <Input
+                      type="checkbox"
+                      name="receiveAuditionVideo"
+                      onChange={changeEventHandler}
+                      value="true"
+                    />
+                  </div>
+                </>
+              )}
+
+              {input.specialSubmissionAuditions === "Offline" && (
+                <>
+                  <div>
+                    <Label>Audition Location</Label>
+                    <Input
+                      name="auditionLocation"
+                      value={input.auditionLocation}
+                      onChange={changeEventHandler}
+                      className="w-full"
+                    />
+                  </div>
+                  <div>
+                    <Label>Audition Date</Label>
+                    <Input
+                      type="date"
+                      name="auditionDate"
+                      value={input.auditionDate}
+                      onChange={changeEventHandler}
+                      className="w-full"
+                    />
+                  </div>
+                </>
+              )} */}
+
               <div>
                 <Label>Select the Company</Label>
                 {companies.length > 0 && (

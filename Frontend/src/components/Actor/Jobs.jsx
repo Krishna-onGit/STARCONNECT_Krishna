@@ -13,10 +13,15 @@ const Jobs = () => {
   useEffect(() => {
     if (searchedQuery) {
       const filteredJobs = allJobs.filter((job) => {
+        // Ensure that job properties are strings before calling toLowerCase
+        const title = job.title || ""; // Fallback to empty string if undefined
+        const description = job.description || ""; // Fallback to empty string if undefined
+        const location = job.location || ""; // Fallback to empty string if undefined
+  
         return (
-          job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.location.toLowerCase().includes(searchedQuery.toLowerCase())
+          title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          location.toLowerCase().includes(searchedQuery.toLowerCase())
         );
       });
       setFilterJobs(filteredJobs);
@@ -24,6 +29,7 @@ const Jobs = () => {
       setFilterJobs(allJobs);
     }
   }, [allJobs, searchedQuery]);
+  
   return (
     <div className="bg-[var(--main-bg)]  min-h-screen text-white">
       <Navbar />

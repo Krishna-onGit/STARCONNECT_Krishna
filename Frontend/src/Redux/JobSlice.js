@@ -30,12 +30,21 @@ const jobSlice = createSlice({
         setSearchJobByTitle: (state, action) => {//added
             state.searchJobByTitle = action.payload;
         },
-        setAllAppliedJobs:(state,action) => {
-            state.allAppliedJobs = action.payload;
+        // setAllAppliedJobs:(state,action) => {
+        //     state.allAppliedJobs = action.payload;
+        // },
+        setAllAppliedJobs: (state, action) => {
+            // 🔹 Automatically remove deleted jobs before updating state
+            state.allAppliedJobs = action.payload.filter(job => job.job !== null);
         },
         setSearchedQuery:(state,action) => {
             state.searchedQuery = action.payload;
-        }
+        },
+        setFilterByAuditionType:(state,action)=>{
+            state.FilterByAuditionType = action.payload;
+        },
+       
+        
     }
 });
 export const {
@@ -45,6 +54,8 @@ export const {
     setSearchJobByTitle,
     setSearchJobByCompany, 
     setAllAppliedJobs,
-    setSearchedQuery
+    setSearchedQuery,
+    setFilterByAuditionType,
+    
 } = jobSlice.actions;
 export default jobSlice.reducer;

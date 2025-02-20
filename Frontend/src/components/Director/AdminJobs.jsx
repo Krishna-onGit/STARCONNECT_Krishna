@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux' 
 import AdminJobsTable from './AdminJobsTable'
 import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs'
-import { setSearchJobByTitle,setSearchJobByCompany} from '@/Redux/JobSlice'
+import { setSearchJobByTitle, setSearchJobByCompany, setFilterByAuditionType } from '@/Redux/JobSlice'
+import { Label } from '@radix-ui/react-label'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
@@ -26,6 +28,13 @@ const AdminJobs = () => {
   useEffect(() => {//added
     dispatch(setSearchJobByTitle(titleInput));
   }, [titleInput]);
+
+  const [auditionType, setAuditionType] = useState("All"); // Add state for audition type added
+  
+  useEffect(() => {
+    dispatch(setFilterByAuditionType(auditionType)); // Dispatch filter change added 
+  }, [auditionType]);
+
 
   return (
     <div className="bg-main-bg min-h-screen relative">
@@ -47,6 +56,23 @@ const AdminJobs = () => {
           placeholder="Filter by Job Title"
           onChange={(e) => setTitleInput(e.target.value)}
         />
+         <div>
+              <Label>Filter by Audition Type:</Label>
+              <RadioGroup className="flex py-4" value={auditionType} onValueChange={setAuditionType}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="All" id="all" />
+                  <Label htmlFor="all">All</Label>
+                </div>
+                <div className="flex items-center space-x-2 ml-4">
+                  <RadioGroupItem value="Online" id="online" />
+                  <Label htmlFor="online">Online</Label>
+                </div>
+                <div className="flex items-center space-x-2 ml-4">
+                  <RadioGroupItem value="Offline" id="offline" />
+                  <Label htmlFor="offline">Offline</Label>
+                </div>
+              </RadioGroup>
+            </div>
         <Button onClick={() => navigate("/admin/jobs/create")}>New Jobs</Button>
       </div>
       <AdminJobsTable />

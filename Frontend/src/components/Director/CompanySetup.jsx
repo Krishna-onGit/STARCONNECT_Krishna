@@ -47,7 +47,7 @@ const CompanySetup = () => {
         formData.append("website", input.website);
         formData.append("location", input.location);
         if (input.file) { //this is for checking for file exist of not 
-            formData.append("file", input.file); //if file exist the it will append 
+            formData.append("logo", input.file); //if file exist the it will append 
         }
         try{
             setLoading(true);
@@ -89,7 +89,7 @@ const CompanySetup = () => {
             <div className='max-w-xl mx-auto my-10'>
                 <form onSubmit={submitHandler} >
                     <div className='flex items-center gap-5 p-8 text-white'>
-                        <Button onClick={() => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold">
+                        <Button onClick={(e) => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold">
                             <ArrowLeft />
                             <span>Back</span>
                         </Button>

@@ -56,13 +56,13 @@ const JobCompo = ({ job, savedJobs }) => {
 
       <div className="flex items-center gap-2 mt-4">
         <Badge className={"text-blue-700 font-bold"} variant="ghost">
-          {job?.position}
+          {job?.projectType}
         </Badge>
         <Badge className={"text-blue-700 font-bold"} variant="ghost">
-          {job?.jobType}
+          {job?.roleType}
         </Badge>
         <Badge className={"text-blue-700 font-bold"} variant="ghost">
-          {job?.salary}
+          {job?.salaryPerDay}
         </Badge>
       </div>
 

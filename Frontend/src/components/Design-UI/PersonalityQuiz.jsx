@@ -1,89 +1,100 @@
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 // import { Button } from "../ui/button";
+// import { useNavigate } from "react-router-dom";
+// import AnimatedRoadmap from "./AnimatedRoadmap";
+// import HeroScrollDemo from "./HeroScrollDemo";
 
 // const questions = [
 //   {
 //     question: "How do you prepare for a role?",
 //     options: [
-//       { text: "I dive deep into research and live like my character.", type: "Method Actor" },
-//       { text: "I rely on improvisation and spontaneity.", type: "Comedic Actor" },
-//       { text: "I focus on physical transformation and stunts.", type: "Action Star" },
-//       { text: "I take a classical approach with rehearsed techniques.", type: "Character Actor" },
+//       { text: "I dive deep into research and live like my character." },
+//       { text: "I rely on improvisation and spontaneity." },
+//       { text: "I focus on physical transformation and stunts." },
+//       { text: "I take a classical approach with rehearsed techniques." },
 //     ],
 //   },
 //   {
 //     question: "What kind of roles excite you the most?",
 //     options: [
-//       { text: "Serious, intense, and emotional roles.", type: "Method Actor" },
-//       { text: "Funny, light-hearted, and comedic roles.", type: "Comedic Actor" },
-//       { text: "Action-packed and thrilling roles.", type: "Action Star" },
-//       { text: "Diverse, transformative roles that challenge me.", type: "Character Actor" },
+//       { text: "Serious, intense, and emotional roles." },
+//       { text: "Funny, light-hearted, and comedic roles." },
+//       { text: "Action-packed and thrilling roles." },
+//       { text: "Diverse, transformative roles that challenge me." },
 //     ],
 //   },
 //   {
 //     question: "What is your ideal acting environment?",
 //     options: [
-//       { text: "A serious, dramatic set with deep emotions.", type: "Method Actor" },
-//       { text: "A lively, fun atmosphere full of energy.", type: "Comedic Actor" },
-//       { text: "An intense action-packed environment.", type: "Action Star" },
-//       { text: "A versatile and challenging stage or set.", type: "Character Actor" },
+//       { text: "A serious, dramatic set with deep emotions." },
+//       { text: "A lively, fun atmosphere full of energy." },
+//       { text: "An intense action-packed environment." },
+//       { text: "A versatile and challenging stage or set." },
 //     ],
 //   },
 //   {
 //     question: "Which movie genre do you enjoy the most?",
 //     options: [
-//       { text: "Psychological thrillers and dramas.", type: "Method Actor" },
-//       { text: "Comedies and light-hearted films.", type: "Comedic Actor" },
-//       { text: "Action and adventure movies.", type: "Action Star" },
-//       { text: "Fantasy and historical dramas.", type: "Character Actor" },
+//       { text: "Psychological thrillers and dramas." },
+//       { text: "Comedies and light-hearted films." },
+//       { text: "Action and adventure movies." },
+//       { text: "Fantasy and historical dramas." },
 //     ],
 //   },
 //   {
 //     question: "How do you handle unexpected situations on set?",
 //     options: [
-//       { text: "I stay in character no matter what.", type: "Method Actor" },
-//       { text: "I improvise and go with the flow.", type: "Comedic Actor" },
-//       { text: "I adapt and keep the scene dynamic.", type: "Action Star" },
-//       { text: "I use my experience to adjust seamlessly.", type: "Character Actor" },
+//       { text: "I stay in character no matter what." },
+//       { text: "I improvise and go with the flow." },
+//       { text: "I adapt and keep the scene dynamic." },
+//       { text: "I use my experience to adjust seamlessly." },
 //     ],
 //   },
 // ];
 
 // const PersonalityQuiz = () => {
 //   const [currentQuestion, setCurrentQuestion] = useState(0);
-//   const [selectedType, setSelectedType] = useState({});
 //   const [quizComplete, setQuizComplete] = useState(false);
 //   const [hideQuiz, setHideQuiz] = useState(false);
-//   const [actorType, setActorType] = useState("");
+//   const navigate = useNavigate();
 
-//   const handleAnswer = (type) => {
-//     setSelectedType((prev) => ({
-//       ...prev,
-//       [type]: (prev[type] || 0) + 1,
-//     }));
+//   // Check if quiz has been completed before, to hide it
+//   useEffect(() => {
+//     const quizCompleted = localStorage.getItem("quizCompleted");
+//     if (quizCompleted) {
+//       setHideQuiz(true);
+//     }
+//   }, []);
 
+//   const handleAnswer = () => {
 //     if (currentQuestion < questions.length - 1) {
 //       setCurrentQuestion(currentQuestion + 1);
 //     } else {
-//       const result = Object.entries(selectedType).sort((a, b) => b[1] - a[1])[0]?.[0] || type;
-//       setActorType(result);
 //       setQuizComplete(true);
-//       setTimeout(() => setHideQuiz(true), 1500);
+//       setTimeout(() => {
+//         localStorage.setItem("quizCompleted", "true"); // Save that the quiz is completed
+//         navigate("/JOBS"); // Navigate to the job page
+//       }, 1500);
 //     }
 //   };
 
 //   return (
 //     <div className="flex justify-center items-center min-h-screen transition-all bg-inherit">
-//       {!hideQuiz ? (
-//         <div className="max-w-3xl w-full p-6 md:p-8  bg-gray-950 shadow-lg rounded-2xl border border-white-700 text-white font-semibold relative transition-opacity duration-1000">
+//       {hideQuiz ? (
+//         //<AnimatedRoadmap />
+//         <HeroScrollDemo />
+//       ) : (
+//         <div className="max-w-3xl w-full p-6 md:p-8 bg-gray-950 shadow-lg rounded-2xl border border-white-700 text-white font-semibold relative transition-opacity duration-1000">
 //           {!quizComplete ? (
 //             <div>
-//               <h2 className="text-2xl font-extrabold text-center mb-6">{questions[currentQuestion].question}</h2>
+//               <h2 className="text-2xl font-extrabold text-center mb-6">
+//                 {questions[currentQuestion].question}
+//               </h2>
 //               <div className="space-y-4">
 //                 {questions[currentQuestion].options.map((option, index) => (
 //                   <button
 //                     key={index}
-//                     onClick={() => handleAnswer(option.type)}
+//                     onClick={handleAnswer}
 //                     className="block w-full px-5 py-3 bg-[#6A38C2] hover:bg-[#9365E5] text-lg font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border border-white-600"
 //                   >
 //                     {option.text}
@@ -93,21 +104,10 @@
 //             </div>
 //           ) : (
 //             <div className="text-center">
-//               <h2 className="text-3xl font-extrabold">You are a <span className="text-Blue">{actorType}!</span></h2>
-//               <p className="mt-3 text-lg text-gray-300">This means you excel in <span className="text-Blue">{actorType}</span> roles.</p>
+//               <h2 className="text-3xl font-extrabold">Quiz Completed!</h2>
+//               <p className="mt-3 text-lg text-gray-300">Thank you for completing the quiz.</p>
 //             </div>
 //           )}
-//         </div>
-//       ) : (
-//         <div className="max-w-3xl w-full p-8 bg-gray-900 text-white rounded-2xl shadow-lg text-center transition-opacity duration-1000 animate-fade-in">
-//           <h2 className="text-3xl font-bold">You're a <span className="text-Blue">{actorType}</span>!</h2>
-//           <p className="mt-3 text-lg text-gray-300">
-//             "Great actors don't just act, they become." – Learn how to enhance your {actorType} skills with our expert resources!
-//           </p>
-//           {/* <button mt-6 px-6 py-3 bg-blue-600  text-white text-lg font-semibold rounded-lg transition-all duration-300">
-            
-//           </button> */}
-//           <Button className=" hover:bg-gray-400">Explore {actorType} Roles</Button>
 //         </div>
 //       )}
 //     </div>
@@ -115,14 +115,9 @@
 // };
 
 // export default PersonalityQuiz;
-
-
-
-// // change bg , on every que bg should change
-
 import React, { useState, useEffect } from "react";
-import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import HeroScrollDemo from "./HeroScrollDemo";
 
 const questions = [
   {
@@ -176,66 +171,61 @@ const PersonalityQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
   const [hideQuiz, setHideQuiz] = useState(false);
-  const [background, setBackground] = useState("/Images/default-bg.jpg"); // Default background
   const navigate = useNavigate();
 
-  // Check if quiz has been completed before, to hide it
+  // Check if quiz has been completed in localStorage for this actor
   useEffect(() => {
     const quizCompleted = localStorage.getItem("quizCompleted");
-    if (quizCompleted) {
-      setHideQuiz(true);
+    if (quizCompleted === "true") {
+      setHideQuiz(true); // If quiz completed, hide the quiz and show HeroScrollDemo
     }
   }, []);
 
   const handleAnswer = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      // Change background with each question
-      setBackground(`/Images/quiz-bg${currentQuestion + 1}.jpg`);
     } else {
       setQuizComplete(true);
       setTimeout(() => {
-        localStorage.setItem("quizCompleted", "true"); // Save that the quiz is completed
-        navigate("/JOBS"); // Navigate to the job page
+        localStorage.setItem("quizCompleted", "true"); // Store quiz completion in localStorage
+        setHideQuiz(true); // Hide the quiz after completion
+        navigate("/JOBS"); // Navigate to jobs page
       }, 1500);
     }
   };
 
+  // If the quiz has been completed, show HeroScrollDemo
+  if (hideQuiz) {
+    return <HeroScrollDemo />;
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen transition-all bg-inherit">
-      {!hideQuiz ? (
-        <div className="max-w-3xl w-full p-6 md:p-8 bg-gray-950 shadow-lg rounded-2xl border border-white-700 text-white font-semibold relative transition-opacity duration-1000">
-          {!quizComplete ? (
-            <div>
-              <h2 className="text-2xl font-extrabold text-center mb-6">{questions[currentQuestion].question}</h2>
-              <div className="space-y-4">
-                {questions[currentQuestion].options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={handleAnswer}
-                    className="block w-full px-5 py-3 bg-[#6A38C2] hover:bg-[#9365E5] text-lg font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border border-white-600"
-                  >
-                    {option.text}
-                  </button>
-                ))}
-              </div>
+      <div className="max-w-3xl w-full p-6 md:p-8 bg-gray-950 shadow-lg rounded-2xl border border-white-700 text-white font-semibold relative transition-opacity duration-1000">
+        {!quizComplete ? (
+          <div>
+            <h2 className="text-2xl font-extrabold text-center mb-6">
+              {questions[currentQuestion].question}
+            </h2>
+            <div className="space-y-4">
+              {questions[currentQuestion].options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={handleAnswer}
+                  className="block w-full px-5 py-3 bg-[#6A38C2] hover:bg-[#9365E5] text-lg font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-md border border-white-600"
+                >
+                  {option.text}
+                </button>
+              ))}
             </div>
-          ) : (
-            <div className="text-center">
-              <h2 className="text-3xl font-extrabold">Quiz Completed!</h2>
-              <p className="mt-3 text-lg text-gray-300">Thank you for completing the quiz.</p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="max-w-3xl w-full p-8 bg-gray-900 text-white rounded-2xl shadow-lg text-center transition-opacity duration-1000 animate-fade-in">
-          <h2 className="text-3xl font-bold">You have completed the quiz!</h2>
-          <p className="mt-3 text-lg text-gray-300">
-            "Great actors don't just act, they become." – Learn how to enhance your skills!
-          </p>
-          <Button className="hover:bg-gray-400" onClick={() => navigate("/JOBS")}>Explore Roles</Button>
-        </div>
-      )}
+          </div>
+        ) : (
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold">Quiz Completed!</h2>
+            <p className="mt-3 text-lg text-gray-300">Thank you for completing the quiz.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

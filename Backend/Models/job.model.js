@@ -1,58 +1,3 @@
-// import mongoose from "mongoose";
-
-// const jobSchema = new mongoose.Schema({
-//     title: {
-//         type: String,
-//         required: true
-//     },
-//     description: {
-//         type: String,
-//         required: true
-//     },
-//     requirements: [{
-//         type: String
-//     }],
-//     salary: {
-//         type: Number,
-//         required: true
-//     },
-//     experienceLevel:{
-//         type:Number,
-//         required:true,
-//     },
-//     location: {
-//         type: String,
-//         required: true
-//     },
-//     jobType: {
-//         type: String,
-//         required: true
-//     },
-//     position: {
-//         type: Number,
-//         required: true
-//     },
-//     company: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Company',
-//         required: true
-//     },
-//     created_by: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'User',
-//         required: true
-//     },
-//     applications: [
-//         {
-//             type: mongoose.Schema.Types.ObjectId,
-//             ref: 'Application',
-//         }
-//     ]
-// },{timestamps:true});
-// const Job = mongoose.models.Job || mongoose.model("Job", jobSchema);
-
-// export  {Job} ;
-
 import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
@@ -141,7 +86,7 @@ const jobSchema = new mongoose.Schema({
     },
     auditionDetails: {
         script: { type: String }, // Uploadable audition script
-        videoRequirement: { type: Boolean }, // If online, expect video
+        videoRequirement: { type: Boolean ,default: false}, // If online, expect video
         location: { type: String }, // If offline, specify location
         date: { type: Date } // If offline, specify date
     },
@@ -161,7 +106,14 @@ const jobSchema = new mongoose.Schema({
             ref: 'Application',
             required:true
         }
-    ]
+    ],
+    auditions: [//added 
+        {
+          applicant: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          video: { type: String }, 
+          submittedAt: { type: Date, default: Date.now },
+        }
+      ],
 }, { timestamps: true });
 
 const Job = mongoose.models.Job || mongoose.model("Job", jobSchema);

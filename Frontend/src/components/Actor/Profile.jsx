@@ -164,6 +164,7 @@ import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false); // New state to track modal visibility
   const { user } = useSelector((store) => store.auth);
   const [refresh, setRefresh] = useState(false);
 
@@ -180,124 +181,211 @@ const Profile = () => {
     setRefresh((prev) => !prev);
   }, [user]);
 
+  const handleAvatarClick = () => {
+    if (user.profile.profilePhoto) {
+      setIsImageModalOpen(true); // Open the modal when the avatar is clicked
+    }
+  };
+
+  const closeImageModal = () => {
+    setIsImageModalOpen(false); // Close the modal
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col">
       <div
         className="flex-grow "
         style={{
           backgroundImage: `url("/DesignItems/CINEMA1.jfif")`,
-          backgroundSize:"cover",
-          backgroundRepeat:"no-repeat",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
-      ><div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="relative z-10">
+      >
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative z-10">
+          <Navbar />
+          <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0 border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl bg-white/45">
+            <div className="flex justify-between">
+              <div className="flex items-center gap-3 ml-4 font-semibold">
+                <Avatar
+                  className="h-16 w-16 object-cover"
+                  onClick={handleAvatarClick}
+                >
+                  <AvatarImage
+                    className="object-cover"
+                    key={refresh}
+                    src={user.profile.profilePhoto || ""}
+                  />
+                </Avatar>
+                <div>
+                  <h1 className="font-extrabold text-gray-800 text-xl">
+                    {user.fullname}
+                  </h1>
+                  <p>{user.profile.bio || "No bio available"}</p>
+                </div>
+              </div>
+              <Button
+                onClick={() => setOpen(true)}
+                className="text-right"
+                variant="outline"
+              >
+                <Pen />
+              </Button>
+            </div>
 
-        <Navbar />
-        <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0 border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl bg-white/45">
-          <div className="flex justify-between">
-            <div className="flex items-center gap-3 ml-4 font-semibold">
-              <Avatar className="h-16 w-16 object-cover">
-                <AvatarImage className="object-cover"
-                  key={refresh}
-                  src={user.profile.profilePhoto || ""}
-                />
-              </Avatar>
-              <div>
-                <h1 className="font-extrabold text-gray-800 text-xl">
-                  {user.fullname}
-                </h1>
-                <p>{user.profile.bio || "No bio available"}</p>
+            {/* Email */}
+            <div className="ml-6 my-2 flex items-center gap-5 font-bold">
+              <Mail />
+              <span>{user.email}</span>
+            </div>
+
+            {/* Phone Number */}
+            <div className="ml-6 my-2 flex items-center gap-5 font-bold">
+              <Contact />
+              <span>{user.phoneNumber || "No number provided"}</span>
+            </div>
+
+            {/* Location */}
+            <div className="ml-6 my-2 flex items-center gap-5 font-bold">
+              <MapPin />
+              <span>{user.profile.location || "Location not set"}</span>
+            </div>
+
+            {/* Skills */}
+            <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
+              <Popcorn />
+              <div className="flex items-center gap-1">
+                {user.profile.skills?.length > 0 ? (
+                  user.profile.skills.map((item, index) => (
+                    <Badge
+                      className="text-base text-cyan-300 px-3 py-0.1"
+                      key={index}
+                    >
+                      {item}
+                    </Badge>
+                  ))
+                ) : (
+                  <span>N/A</span>
+                )}
               </div>
             </div>
-            <Button
-              onClick={() => setOpen(true)}
-              className="text-right"
-              variant="outline"
-            >
-              <Pen />
-            </Button>
-          </div>
 
-          {/* Email */}
-          <div className="ml-6 my-2 flex items-center gap-5 font-bold">
-            <Mail />
-            <span>{user.email}</span>
-          </div>
-
-          {/* Phone Number */}
-          <div className="ml-6 my-2 flex items-center gap-5 font-bold">
-            <Contact />
-            <span>{user.phoneNumber || "No number provided"}</span>
-          </div>
-
-          {/* Location */}
-          <div className="ml-6 my-2 flex items-center gap-5 font-bold">
-            <MapPin />
-            <span>{user.profile.location || "Location not set"}</span>
-          </div>
-
-          {/* Skills */}
-          <div className="ml-6 my-5 font-extrabold flex items-center gap-4">
-            <Popcorn />
-            <div className="flex items-center gap-1">
-              {user.profile.skills?.length > 0 ? (
-                user.profile.skills.map((item, index) => (
-                  <Badge className="text-base px-3 py-0.1" key={index}>
-                    {item}
-                  </Badge>
-                ))
+            {/* Age */}
+            <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
+              <Calendar />
+              {user.profile.age ? (
+                user.profile.age
               ) : (
-                <span>N/A</span>
+                <span className="text-red-500">Age not Defined</span>
               )}
             </div>
-          </div>
 
-          {/* Age */}
-          <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
-            <Calendar />
-            {user.profile.age ? (
-              user.profile.age
-            ) : (
-              <span className="text-red-500">Age not Defined</span>
+            {/* Gender */}
+            <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
+              <User />
+              {user.profile.gender || (
+                <span className="text-red-500">Gender not defined</span>
+              )}
+            </div>
+            {/* Display Instagram, Facebook, and Website Links */}
+            {user.profile.instagramId && (
+              <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
+                <span className="font-bold">Instagram: </span>
+                <a
+                  href={`https://www.instagram.com/${user.profile.instagramId}`} // Direct Instagram link
+                  className="text-cyan-300 hover:underline"
+                  target="_blank" // Open in new tab
+                  rel="noopener noreferrer" // Security measure
+                >
+                  {user.profile.instagramId}
+                </a>
+              </div>
             )}
-          </div>
 
-          {/* Gender */}
-          <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
-            <User />
-            {user.profile.gender || (
-              <span className="text-red-500">Gender not defined</span>
+            {user.profile.facebookId && (
+              <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
+                <span className="font-bold">Facebook: </span>
+                <a
+                  href={`https://www.facebook.com/${user.profile.facebookId}`} // Direct Facebook link
+                  className="text-cyan-300 hover:underline"
+                  target="_blank" // Open in new tab
+                  rel="noopener noreferrer" // Security measure
+                >
+                  {user.profile.facebookId}
+                </a>
+              </div>
             )}
-          </div>
 
-          {/* Profile Photo Link */}
-          <div className="flex w-full max-w-sm items-center gap-5 ml-6">
-            <Projector />
-            {user.profile.profilePhoto ? (
-              <a
-                target="_blank"
-                href={user.profile.profilePhoto}
-                className="font-bold w-full hover:underline cursor-pointer "
+            {user.profile.webistelink && (
+              <div className="flex w-full max-w-sm items-center gap-5 ml-6 my-3">
+                <span className="font-bold">Website: </span>
+                <a
+                  href={user.profile.webistelink} // Direct Website link
+                  className="text-cyan-300 hover:underline"
+                  target="_blank" // Open in new tab
+                  rel="noopener noreferrer" // Security measure
+                >
+                  {user.profile.webistelink}
+                </a>
+              </div>
+            )}
+
+            {/* Display Modal for Profile Photo */}
+            {isImageModalOpen && user.profile.profilePhoto && (
+              <div
+                className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+                onClick={closeImageModal}
               >
-                View Profile Photo
-              </a>
-            ) : (
-              <span>NA</span>
+                <div className="relative w-auto max-h-[90vh] overflow-hidden bg-white rounded-lg shadow-lg p-5">
+                  <img
+                    src={user.profile.profilePhoto}
+                    alt="Profile"
+                    className="w-96 h-auto object-contain transition-all duration-300 ease-in-out transform hover:scale-105"
+                  />
+                  <button
+                    className="absolute top-2 right-2 bg-white rounded-full p-2 text-gray-800 hover:text-white hover:bg-red-500 transition-all duration-200"
+                    onClick={closeImageModal}
+                  >
+                    &times;
+                  </button>
+                </div>
+              </div>
             )}
+
+            {/* Display Uploaded Photos */}
+            <div className="ml-6 my-5">
+              <h2 className="font-bold text-lg mb-4">Uploaded Photos</h2>
+              <div className="flex gap-4 flex-wrap">
+                {user.profile.photos && user.profile.photos.length > 0 ? (
+                  user.profile.photos.map((photo, index) => (
+                    <div
+                      key={index}
+                      className="w-24 h-24 overflow-hidden rounded-lg shadow-lg"
+                    >
+                      <img
+                        src={photo}
+                        alt={`Uploaded Photo ${index + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-gray-500">No photos uploaded yet</span>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+          {/* Applied Jobs Section */}
+          <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0 border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl bg-white/45">
+            <h1 className="font-bold text-lg my-5 p-5">Applied Jobs</h1>
+            <AppliedJobTabel />
+          </div>
 
-        {/* Applied Jobs Section */}
-        <div className="max-w-4xl mx-auto text-black bg-white border-opacity-0 border-gray-200 rounded-2xl my-5 p-8 backdrop-blur-xl bg-white/45">
-          <h1 className="font-bold text-lg my-5 p-5">Applied Jobs</h1>
-          <AppliedJobTabel />
+          <UpdateProfileDailog open={open} setOpen={setOpen} />
         </div>
-
-        <UpdateProfileDailog open={open} setOpen={setOpen} />
       </div>
     </div>
-      </div>
   );
 };
 

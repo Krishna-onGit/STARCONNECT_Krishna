@@ -20,6 +20,17 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.auth);
 
+  // const [input, setInput] = useState({
+  //   fullname: user?.fullname || "",
+  //   email: user?.email || "",
+  //   phoneNumber: user?.phoneNumber || "",
+  //   bio: user?.profile?.bio || "",
+  //   skills: user?.profile?.skills?.join(", ") || "",
+  //   projects: user?.profile?.projects || "",
+  //   contact: user?.profile?.contact || "",
+  //   awards: user?.profile?.awards || "",
+  //   profilePhoto: null,
+  // });
   const [input, setInput] = useState({
     fullname: user?.fullname || "",
     email: user?.email || "",
@@ -27,10 +38,12 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
     bio: user?.profile?.bio || "",
     skills: user?.profile?.skills?.join(", ") || "",
     projects: user?.profile?.projects || "",
-    contact: user?.profile?.contact || "",
+    instagramId: user?.profile?.instagramId || "",
+    facebookId: user?.profile?.facebookId || "",
     awards: user?.profile?.awards || "",
     profilePhoto: null,
   });
+
   const [isDirty, setIsDirty] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const dispatch = useDispatch();
@@ -77,7 +90,7 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
       }
 
       const res = await axios.post(
-        `${USER_API_END_POINT}/profile/update`,
+        `${USER_API_END_POINT}/CDprofile/update`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -129,7 +142,7 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
       bio: user.profile?.bio || "",
       skills: user.profile?.skills?.join(", ") || "",
       projects: user.profile?.projects || "",
-      contact: user.profile?.contact || "",
+      contact: user.profile?.contact || "", // here reomve this and add insta and FB.
       awards: user.profile?.awards || "",
       profilePhoto: null, // You can update this based on how profile photos are managed
     });
@@ -194,10 +207,16 @@ const CDUpdateProfileDailog = ({ open, setOpen }) => {
           )}
           {currentStep === 3 && (
             <div className="grid gap-4">
-              <Label>Contact (Social Media, Portfolio)</Label>
+              <Label>Instagram ID</Label>
               <Input
-                name="contact"
-                value={input.contact}
+                name="instagramId"
+                value={input.instagramId}
+                onChange={changeEventHandler}
+              />
+              <Label>Facebook ID</Label>
+              <Input
+                name="facebookId"
+                value={input.facebookId}
                 onChange={changeEventHandler}
               />
               <Label>Awards & Achievements</Label>
