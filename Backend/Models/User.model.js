@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema(
       awards:[{type:String}],
 
        // Add the quizCompleted field
-      quizCompleted: { type: Boolean, default: false },
+      // quizCompleted: { type: Boolean, default: false },
     },
   },
   { timestamps: true }
