@@ -15,10 +15,7 @@ router.route("/director").get(getAllDirector);
 router.route("/Director/profile/:id").get(getUserProfile);
 router.route("/CDprofile/update").post(isAuthenticated,multipleUpload,updateDirectorProfile)
 router.delete("/delete-account", isAuthenticated, deleteAccount);//added 
-// Route to update quiz status
-router.put("/update-quiz-status", isAuthenticated, updateQuizStatus);
-// Route to get quiz status
-router.get("/quiz-status", isAuthenticated, getQuizStatus);
+
 
 
 export default router;

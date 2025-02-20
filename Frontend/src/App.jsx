@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import AuditionVideos from "./components/Director/AuditionVideos";
 
 // Lazy load pages
 const Login = lazy(() => import("./components/Auth/Login"));
@@ -124,6 +125,14 @@ const appRouter = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: `/Director/auditions/:JobId`,
+    element:(
+      <ProtectedRoute>
+        <AuditionVideos />
+      </ProtectedRoute>
+    )
+  }
 ]);
 
 function App() {

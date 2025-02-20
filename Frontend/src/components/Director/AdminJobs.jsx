@@ -10,6 +10,7 @@ import { setSearchJobByTitle, setSearchJobByCompany, setFilterByAuditionType } f
 import { Label } from '@radix-ui/react-label'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
+
 const AdminJobs = () => {
   useGetAllAdminJobs();
   const [companyInput, setCompanyInput] = useState("");

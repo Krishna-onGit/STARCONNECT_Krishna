@@ -177,7 +177,7 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
   };
 
   const nextStep = () => {
-    if (currentStep < 5) setCurrentStep(currentStep + 1);
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
   };
 
   const prevStep = () => {
@@ -532,8 +532,8 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     value={input.facebookId}
                     onChange={changeEventHandler}
                     className="col-span-3"
-                     placeholder="Enter Facebook Link"
-                      type="url"
+                    placeholder="Enter Facebook Link"
+                    type="url"
                   />
                 </div>
 
@@ -549,7 +549,6 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     className="col-span-3"
                     placeholder="Enter Website Link"
                     type="url"
-                    
                   />
                 </div>
               </div>
@@ -617,7 +616,11 @@ const UpdateProfileDailog = ({ open, setOpen }) => {
                     Next
                   </Button>
                 ) : (
-                  <Button type="submit" className="w-auto">
+                  <Button
+                    type="button"
+                    onClick={submitHandler} // Update should only happen on clicking this button
+                    className="w-auto"
+                  >
                     {loading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (

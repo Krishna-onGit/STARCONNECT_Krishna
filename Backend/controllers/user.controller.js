@@ -326,45 +326,6 @@ export const deleteAccount = async (req, res) => {//added
     return res.status(500).json({ success: false, message: "Failed to delete account" });
   }
 };
-
-// Update quiz completed status
-exports.updateQuizStatus = async (req, res) => {
-  try {
-    const userId = req.user.id; // assuming you're using a JWT for authentication
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Update the quizCompleted status
-    user.quizCompleted = true;
-    await user.save();
-
-    return res.status(200).json({ message: "Quiz status updated successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// Get quiz completion status
-exports.getQuizStatus = async (req, res) => {
-  try {
-    const userId = req.user.id; // assuming you're using a JWT for authentication
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    return res.status(200).json({ quizCompleted: user.quizCompleted });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 // import { User } from "../Models/User.model.js";
 // import { Job } from "../Models/job.model.js";//added
 // import { Company } from "../Models/company.model.js";//added

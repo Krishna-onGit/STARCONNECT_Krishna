@@ -107,6 +107,8 @@ const jobSchema = new mongoose.Schema({
             required:true
         }
     ],
+    specialSubmissionAuditions: ["Online", "Offline"],
+    
     auditions: [//added 
         {
           applicant: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

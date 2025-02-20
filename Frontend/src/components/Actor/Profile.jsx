@@ -337,11 +337,11 @@ const Profile = () => {
                 className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
                 onClick={closeImageModal}
               >
-                <div className="relative w-auto max-h-[90vh] overflow-hidden bg-white rounded-lg shadow-lg p-5">
+                <div className="relative w-96 max-h-auto overflow-hidden bg-white rounded-lg shadow-lg p-5">
                   <img
                     src={user.profile.profilePhoto}
                     alt="Profile"
-                    className="w-96 h-auto object-contain transition-all duration-300 ease-in-out transform hover:scale-105"
+                    className="w-96 h-96 object-contain transition-all duration-300 ease-in-out transform hover:scale-105"
                   />
                   <button
                     className="absolute top-2 right-2 bg-white rounded-full p-2 text-gray-800 hover:text-white hover:bg-red-500 transition-all duration-200"

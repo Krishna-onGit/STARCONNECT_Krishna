@@ -71,37 +71,38 @@ const JobDescription = () => {
 
 
   //for audition video 
-  const handleVideoUpload = async (e) => {//added for video 
+  const handleVideoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
     if (file.size > 15 * 1024 * 1024) {
       toast.error("Video file must be 15MB or smaller.");
       return;
     }
-
-    setIsUploading(true);//added
+  
+    setIsUploading(true);
     const formData = new FormData();
     formData.append("video", file);
-    formData.append("jobId", jobId);
-    formData.append("userId", user?._id);
-
+  
     try {
-      const res = await axios.post(`${APPLICATION_API_END_POINT}/submit-audition`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true
-      });
+      const res = await axios.post(
+        `${JOB_API_END_POINT}/${jobId}/:jobId/audition`,  // Adjusted the endpoint here
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         toast.success("Audition video submitted successfully!");
-        setAuditionVideo(null);
+        setAuditionVideo(null); // Reset the audition video state
       }
     } catch (error) {
       toast.error("Failed to submit audition video.");
-    } finally {//added
+    } finally {
       setIsUploading(false);
     }
   };
-
 
   const renderField = (label, value) => {
     if (!value && value !== 0) return null;
