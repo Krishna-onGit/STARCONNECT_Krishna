@@ -26,7 +26,7 @@ const HeroSection = () => {
         <Navbar />
       </div>
       <div
-        className="absolute inset-0 bg-black w-full h-full z-10"
+        className="absolute inset-0 bg-black w- h-full z-10"
         style={{ pointerEvents: "none" }}
       >
         

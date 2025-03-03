@@ -116,6 +116,10 @@ const jobSchema = new mongoose.Schema({
           submittedAt: { type: Date, default: Date.now },
         }
       ],
+      isOnlineAudition: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const Job = mongoose.models.Job || mongoose.model("Job", jobSchema);

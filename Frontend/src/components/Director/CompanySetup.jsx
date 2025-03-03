@@ -13,8 +13,8 @@ import useGetCompanyById from '@/hooks/useGetCompanyById'
 
 
 const CompanySetup = () => {
-        
-    const params=useParams();
+
+    const params = useParams();
     useGetCompanyById(params.id);//this is for edit if you want to edit existing company by it's id
 
     const [input, setInput] = useState({ //seting the value as empty
@@ -26,7 +26,7 @@ const CompanySetup = () => {
     });
 
 
-    const {singleCompany} = useSelector(store=>store.company)
+    const { singleCompany } = useSelector(store => store.company)
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -49,103 +49,110 @@ const CompanySetup = () => {
         if (input.file) { //this is for checking for file exist of not  //changed 
             formData.append("logo", input.file); //if file exist the it will append 
         }
-        try{
+        try {
             setLoading(true);
-            console.log("Updating company with:", formData);
-            const res=await axios.put(`${COMPANY_API_END_POINT}/update/${params.id}`,formData,{
-                headers:{
-                    "Content-Type":"multipart/form-data"
+            const res = await axios.put(`${COMPANY_API_END_POINT}/update/${params.id}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
                 },
-                withCredentials:true
+                withCredentials: true
             });
-            if(res.data.success){
+            if (res.data.success) {
                 toast.success(res.data.message);
                 navigate("/admin/companies");
             }
-        }catch (error) {
-            console.log("Error Response:", error.response?.data);
-            toast.error(error.response?.data?.message || "Failed to update company");
-        }finally {
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        console.log("singleCompany:", singleCompany); 
-          setInput({
-                name: singleCompany.name || "",
-                description: singleCompany.description || "",
-                website: singleCompany.website || "",
-                location: singleCompany.location || "",
-                file: singleCompany.file || null
-            });
-        }, [singleCompany]);
-    
+        setInput({
+            name: singleCompany.name || "",
+            description: singleCompany.description || "",
+            website: singleCompany.website || "",
+            location: singleCompany.location || "",
+            logo: singleCompany.file || null
+        });
+    }, [singleCompany]);
+
     return (
         <div className='bg-main-bg min-h-screen text-white'>
             <div className='bg-overlay-bg min-h-screen'>
 
-            <Navbar />
-            <div className='max-w-xl mx-auto my-10'>
-                <form onSubmit={submitHandler} >
-                    <div className='flex items-center gap-5 p-8 text-white'>
-                        <Button onClick={(e) => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold">
-                            <ArrowLeft />
-                            <span>Back</span>
-                        </Button>
-                        <h1 className='font-bold text-xl'>Company Setup</h1>
-                    </div>
-                    <div className='grid grid-cols-2 gap-4 '>
-                        <div>
-                            <Label className="text-white">Company Name</Label>
-                            <Input
-                                type="text"
-                                name="name"
-                                value={input.name}
-                                onChange={changeEventHandler}
-                            />
+                <Navbar />
+                <div className='max-w-xl mx-auto my-10'>
+                    <form onSubmit={submitHandler} >
+                        <div className='flex items-center gap-5 p-8 text-white'>
+                            <Button
+                                onClick={(e) => {
+                                    e.preventDefault(); // Prevent any form submission logic
+                                    navigate("/admin/companies"); // Navigate back to the companies page
+                                }}
+                                variant="outline"
+                                className="flex items-center gap-2 text-gray-500 font-semibold"
+                            >
+                                <ArrowLeft />
+                                <span>Back</span>
+                            </Button>
+
+                            <h1 className='font-bold text-xl'>Company Setup</h1>
                         </div>
-                        <div>
-                            <Label className="text-white">Description</Label>
-                            <Input
-                                type="text"
-                                name="description"
-                                value={input.description}
-                                onChange={changeEventHandler}
-                            />
+                        <div className='grid grid-cols-2 gap-4 '>
+                            <div>
+                                <Label className="text-white">Company Name</Label>
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    value={input.name}
+                                    onChange={changeEventHandler}
+                                />
+                            </div>
+                            <div>
+                                <Label className="text-white">Description</Label>
+                                <Input
+                                    type="text"
+                                    name="description"
+                                    value={input.description}
+                                    onChange={changeEventHandler}
+                                />
+                            </div>
+                            <div>
+                                <Label className="text-white">Website</Label>
+                                <Input
+                                    type="text"
+                                    name="website"
+                                    value={input.website}
+                                    onChange={changeEventHandler}
+                                />
+                            </div>
+                            <div>
+                                <Label className="text-white">Location</Label>
+                                <Input
+                                    type="text"
+                                    name="location"
+                                    value={input.location}
+                                    onChange={changeEventHandler}
+                                />
+                            </div>
+                            <div>
+                                <Label>Logo</Label>
+                                <Input
+                                    type="file"
+                                    accept="image/*"
+                                    //name="logo"
+                                    onChange={changeFileHandler}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <Label className="text-white">Website</Label>
-                            <Input
-                                type="text"
-                                name="website"
-                                value={input.website}
-                                onChange={changeEventHandler}
-                            />
-                        </div>
-                        <div>
-                            <Label className="text-white">Location</Label>
-                            <Input
-                                type="text"
-                                name="location"
-                                value={input.location}
-                                onChange={changeEventHandler}
-                            />
-                        </div>
-                        <div>
-                            <Label>Logo</Label>
-                            <Input
-                                type="file"
-                                accept="image/*"
-                                onChange={changeFileHandler}
-                            />
-                        </div>
-                    </div>
-                    {
-                        loading ? <Button className="w-full my-4 text-white"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>
-                    }
-                </form>
-            </div>
+                        {
+                            loading ? <Button className="w-full my-4 text-white"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>
+                        }
+                    </form>
+                </div>
             </div>
         </div>
     )
